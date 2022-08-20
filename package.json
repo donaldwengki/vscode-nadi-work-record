@@ -23,6 +23,7 @@
     "url": "https://github.com/donaldwengki/vscode-nadi-work-record"
   },
   "homepage": "https://github.com/donaldwengki/vscode-nadi-work-record",
+  "icon": "media/vs-logo.png",
   "activationEvents": [
     "onStartupFinished",
     "onCommand:nadi.create-folder",
