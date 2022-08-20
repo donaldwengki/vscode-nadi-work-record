@@ -9,6 +9,18 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "nadi",
+    "history",
+    "file change",
+    "record",
+    "create file",
+    "create folder",
+    "recursively"
+  ],
+  "repository": {
+    "url": "https://github.com/donaldwengki/vscode-nadi-work-record"
+  },
   "activationEvents": [
     "onStartupFinished",
     "onCommand:nadi.create-folder",
