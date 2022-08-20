@@ -1,35 +1,35 @@
-# nadi README
+# Nadi VSCode Extension
 
-This is the README for your extension "nadi". After writing up a brief description, we recommend including the following sections.
+## Description
+Record and present daily recorded file changes.
 
-## Features
+## Main Features
+- Records daily changes of files in the working project directory.
+- Create a directory or file recursively inside the working project directory.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
-For example if there is an image subfolder under your extension project workspace:
+## How to use the extension
+1. Open recorded history from Nadi icon in the sidebar.
+2. Open the Command Palette via the shortcut specific to your OS:
 
-\!\[feature X\]\(images/feature-x.png\)
+- on OSX: Press `^⌘F` (aka `CONTROL+CMD+N`) to create file or press `^⌘F` (aka `CONTROL+CMD+F`) to create folder recursively
+- on Windows: Press `Ctrl+Shift+P` then type Press `Ctrl+Alt+N` to create file or press `Ctrl+Alt+F` to create folder recursively
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+3. Right-click on a file or folder in explorer and select "NADI History: Ignore File/Folder" to select a file or folder to ignore from the historical recording.
 
-## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Command | Description
+--- | ---
+```NADI: Create File``` | Create file recursively inside working directory.
+```NADI: Create Folder``` | Create folder recursively inside working directory.
 
-## Extension Settings
+## Output samples
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### View Recorded File Changes.
+![History Files Recorded](media/hist-preview.gif)
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+### Create File/Folder Recursively.
+![Create File/Folder Recursively](media/create-file.gif)
 
 ## Release Notes
 
@@ -37,35 +37,11 @@ Users appreciate release notes as you update your extension.
 
 ### 1.0.0
 
-Initial release of ...
+Initial release of NADI VSCode Extension
 
-### 1.0.1
 
-Fixed issue #.
+## License
 
-### 1.1.0
+Started as a copy of simple-git-stats https://github.com/HoangNguyen17193/vscode-simple-git-stats
 
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+[MIT License](LICENSE)
