@@ -3,7 +3,7 @@
   "displayName": "NDHistory Work Record",
   "description": "File change history records.",
   "publisher": "DonaldWengki",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "engines": {
     "vscode": "^1.70.0"
   },

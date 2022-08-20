@@ -17,7 +17,12 @@ export class Settings {
         let ingoreList: Array<string> = [];
         if (fs.existsSync(this.historyIgnoreFile)) {
             const ignoreFromFile = fs.readFileSync(this.historyIgnoreFile, { encoding: 'utf-8' });
-            ingoreList = ignoreFromFile.split('\n');
+            const getIgnoreList = ignoreFromFile.split('\n');
+            getIgnoreList.forEach(item => {
+                if(item.trim() !== '' && item.trim().length > 0){
+                    ingoreList.push(item);
+                }
+            });
         }
         if (!withoutDefault) {
             ingoreList.push('.nadi');

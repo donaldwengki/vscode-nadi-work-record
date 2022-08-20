@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as vscode from "vscode";
-import { getNonce } from "../getNonce";
+import { getNonce } from "../getIdentifierStr";
 import { config } from "../lib/global/config";
 import { WorkingHistoryFiles } from "../service/working-history-files";
 
@@ -107,7 +107,7 @@ export class WorkingFilesHistoryTab {
   }
 
   public dispose() {
-    console.log('NADI History tab closed')
+    // console.log('NADI History tab closed')
     WorkingFilesHistoryTab.currentPanel = undefined;
 
     // Clean up our resources

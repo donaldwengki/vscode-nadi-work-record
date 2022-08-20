@@ -31,7 +31,7 @@ Command | Description
 ### Create File/Folder Recursively.
 ![Create File/Folder Recursively](media/create-file.gif)
 
-### 1.0.3
+### 1.0.4
 
 Initial release of NADI VSCode Extension
 

@@ -1,6 +1,5 @@
-import { rejects } from "assert";
 import * as vscode from "vscode";
-import { getNonce } from "../getNonce";
+import { getNonce } from "../getIdentifierStr";
 import { WorkingFilesHistoryTab } from './working-files-history-provider';
 import { WorkingHistoryFiles } from "../service/working-history-files";
 import { Settings } from "../lib/settings";
