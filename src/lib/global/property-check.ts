@@ -26,7 +26,7 @@ export function propertyChek() {
                 let dataArray = data.split('\n');
                 // check '.nadi' if not exist then add
                 if (!dataArray.includes('.nadi')) {
-                    fs.appendFile(gitIgnoreFx, '.nadi', (err) => {
+                    fs.appendFile(gitIgnoreFx, '\n.nadi', (err) => {
                         if (err) {
                             console.error(err);
                         } else {
