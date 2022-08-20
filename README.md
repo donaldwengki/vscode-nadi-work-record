@@ -26,10 +26,10 @@ Command | Description
 ## Output samples
 
 ### View Recorded File Changes.
-![History Files Recorded](https://github.com/donaldwengki/vscode-nadi-work-record/blob/main/media/hist-preview.gif)
+![History Files Recorded](media/hist-preview.gif)
 
 ### Create File/Folder Recursively.
-![Create File/Folder Recursively](https://github.com/donaldwengki/vscode-nadi-work-record/blob/main/media/create-file.gif)
+![Create File/Folder Recursively](media/create-file.gif)
 
 ## Release Notes
 
