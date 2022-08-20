@@ -31,17 +31,9 @@ Command | Description
 ### Create File/Folder Recursively.
 ![Create File/Folder Recursively](media/create-file.gif)
 
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
+### 0.0.1
 
 Initial release of NADI VSCode Extension
 
-
 ## License
-
-Started as a copy of simple-git-stats https://github.com/HoangNguyen17193/vscode-simple-git-stats
-
 [MIT License](LICENSE)
