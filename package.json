@@ -3,7 +3,7 @@
   "displayName": "NDHistory Work Record",
   "description": "File change history records.",
   "publisher": "DonaldWengki",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -23,7 +23,7 @@
     "url": "https://github.com/donaldwengki/vscode-nadi-work-record"
   },
   "homepage": "https://github.com/donaldwengki/vscode-nadi-work-record",
-  "icon": "media/vs-logo.png",
+  "icon": "media/nadi-vs-logo.png",
   "activationEvents": [
     "onStartupFinished",
     "onCommand:nadi.create-folder",
