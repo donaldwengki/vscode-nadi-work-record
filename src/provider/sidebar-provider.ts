@@ -7,12 +7,13 @@ import { Settings } from "../lib/settings";
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
+  _context?: vscode.ExtensionContext
 
   constructor(private readonly _extensionUri: vscode.Uri,
     private context: vscode.ExtensionContext,
     private settings: Settings
   ) {
-
+    this._context = context;
   }
 
   _historyWorkData() {
@@ -116,9 +117,14 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     const nonce = getNonce();
     const initHistoryList = await this._historyWorkData().getHistoryByMonth();
-    const settings = {
-      historyIgnore: this.settings.getHistoryIgnoreList(true)
+    let settings = {
+      historyIgnore: this.settings.getHistoryIgnoreList(true),
+      devTool: false
     };
+
+    if(this._context.extensionMode === vscode.ExtensionMode.Development){
+      settings.devTool = true;
+    }
 
     return `<!DOCTYPE html>
 			<html lang="en">

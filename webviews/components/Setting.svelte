@@ -50,6 +50,7 @@
 
 <div class="sidebar-panel-bottom">
   <div class="left">
+    {#if settings.devTool}
     <span
       class="clickable"
       on:click={() => {
@@ -59,6 +60,8 @@
         });
       }}>Dev Tool</span
     >
+    {/if}
+
     <span
       class="clickable"
       on:click={() => {

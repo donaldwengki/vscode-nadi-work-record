@@ -424,6 +424,35 @@ var app = (function () {
     	};
     }
 
+    // (50:4) {#if settings.devTool}
+    function create_if_block$1(ctx) {
+    	let span;
+    	let mounted;
+    	let dispose;
+
+    	return {
+    		c() {
+    			span = element("span");
+    			span.textContent = "Dev Tool";
+    			attr(span, "class", "clickable");
+    		},
+    		m(target, anchor) {
+    			insert(target, span, anchor);
+
+    			if (!mounted) {
+    				dispose = listen(span, "click", /*click_handler*/ ctx[4]);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d(detaching) {
+    			if (detaching) detach(span);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+    }
+
     function create_fragment$1(ctx) {
     	let div0;
     	let ul;
@@ -431,12 +460,11 @@ var app = (function () {
     	let t0;
     	let div3;
     	let div1;
+    	let t1;
     	let span0;
-    	let t2;
-    	let span1;
-    	let t4;
+    	let t3;
     	let div2;
-    	let span2;
+    	let span1;
     	let mounted;
     	let dispose;
     	let each_value = /*historyIgnoreList*/ ctx[2];
@@ -445,6 +473,8 @@ var app = (function () {
     	for (let i = 0; i < each_value.length; i += 1) {
     		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
     	}
+
+    	let if_block = settings.devTool && create_if_block$1(ctx);
 
     	return {
     		c() {
@@ -458,20 +488,18 @@ var app = (function () {
     			t0 = space();
     			div3 = element("div");
     			div1 = element("div");
+    			if (if_block) if_block.c();
+    			t1 = space();
     			span0 = element("span");
-    			span0.textContent = "Dev Tool";
-    			t2 = space();
-    			span1 = element("span");
-    			span1.textContent = "Reload";
-    			t4 = space();
+    			span0.textContent = "Reload";
+    			t3 = space();
     			div2 = element("div");
-    			span2 = element("span");
-    			span2.textContent = "History Ignore";
+    			span1 = element("span");
+    			span1.textContent = "History Ignore";
     			attr(div0, "class", div0_class_value = "pop-box bottom right historyIgnoreList " + (/*historyIgnorePopOpen*/ ctx[0] ? 'show' : 'hide'));
     			attr(span0, "class", "clickable");
-    			attr(span1, "class", "clickable");
     			attr(div1, "class", "left");
-    			attr(span2, "class", "clickable");
+    			attr(span1, "class", "clickable");
     			attr(div2, "class", "right");
     			attr(div3, "class", "sidebar-panel-bottom");
     		},
@@ -486,18 +514,17 @@ var app = (function () {
     			insert(target, t0, anchor);
     			insert(target, div3, anchor);
     			append(div3, div1);
+    			if (if_block) if_block.m(div1, null);
+    			append(div1, t1);
     			append(div1, span0);
-    			append(div1, t2);
-    			append(div1, span1);
-    			append(div3, t4);
+    			append(div3, t3);
     			append(div3, div2);
-    			append(div2, span2);
+    			append(div2, span1);
 
     			if (!mounted) {
     				dispose = [
-    					listen(span0, "click", /*click_handler*/ ctx[4]),
-    					listen(span1, "click", /*click_handler_1*/ ctx[5]),
-    					listen(span2, "click", /*click_handler_2*/ ctx[6])
+    					listen(span0, "click", /*click_handler_1*/ ctx[5]),
+    					listen(span1, "click", /*click_handler_2*/ ctx[6])
     				];
 
     				mounted = true;
@@ -530,6 +557,8 @@ var app = (function () {
     			if (dirty & /*historyIgnorePopOpen*/ 1 && div0_class_value !== (div0_class_value = "pop-box bottom right historyIgnoreList " + (/*historyIgnorePopOpen*/ ctx[0] ? 'show' : 'hide'))) {
     				attr(div0, "class", div0_class_value);
     			}
+
+    			if (settings.devTool) if_block.p(ctx, dirty);
     		},
     		i: noop,
     		o: noop,
@@ -538,6 +567,7 @@ var app = (function () {
     			destroy_each(each_blocks, detaching);
     			if (detaching) detach(t0);
     			if (detaching) detach(div3);
+    			if (if_block) if_block.d();
     			mounted = false;
     			run_all(dispose);
     		}
