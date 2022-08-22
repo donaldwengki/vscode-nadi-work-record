@@ -13,13 +13,32 @@ export function propertyChek() {
         }
 
         if (!fs.existsSync(historyIgnoreFile)) {
-            fs.writeFileSync(historyIgnoreFile,'');
+            fs.writeFileSync(historyIgnoreFile, '');
+        } else {
+            const gitFld = path.join(workingDirectory, '/.git');
+            const cleanTargetPath = gitFld.replace(workingDirectory + '/', '');
+            if (fs.existsSync(gitFld)) {
+                fs.readFile(historyIgnoreFile, 'utf-8', (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    let dataArray = data.split('\n');
+                    if (!dataArray.includes(cleanTargetPath)) {
+                        fs.appendFile(historyIgnoreFile, (dataArray.length > 0 && dataArray[0].trim() != '' ? '\n' : '') + cleanTargetPath, (err) => {
+                            if (err) {
+                                console.error(err);
+                            }
+                        });
+                    }
+                });
+            }
         }
 
         if (fs.existsSync(gitIgnoreFx)) {
             // add '.nadi' to '.gitignore'
             fs.readFile(gitIgnoreFx, 'utf-8', (err, data) => {
-                if(err){
+                if (err) {
                     console.log(err);
                     return;
                 }
@@ -29,9 +48,7 @@ export function propertyChek() {
                     fs.appendFile(gitIgnoreFx, '\n.nadi', (err) => {
                         if (err) {
                             console.error(err);
-                        } else {
-                            console.log('.nadi added to .gitignore');
-                        }
+                        } 
                     });
                 }
             });
