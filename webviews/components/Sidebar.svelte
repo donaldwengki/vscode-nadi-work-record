@@ -22,14 +22,14 @@
   });
 </script>
 
-<button
+<!-- <button
   on:click={() => {
     nadivscode.postMessage({
       type: "onOpenWorkingFilesHistory",
       value: undefined,
     });
   }}>All History By Date</button
->
+> -->
 
 <h4><b>Work History</b></h4>
 <div class="sidebar-history-box">
