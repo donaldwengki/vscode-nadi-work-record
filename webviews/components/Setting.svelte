@@ -28,7 +28,7 @@
         <div class="title" title="{item}">
           {item}
         </div>
-        <div class="del-button">
+        <div class="del-slide">
           <label class="switch">
             <input
               type="checkbox" checked={(cancelRemoveHistoryIgnoreItem != item) ? true : false}

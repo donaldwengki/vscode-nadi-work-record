@@ -7,13 +7,26 @@ import { Settings } from "../lib/settings";
 export class SidebarProvider implements vscode.WebviewViewProvider {
   _view?: vscode.WebviewView;
   _doc?: vscode.TextDocument;
-  _context?: vscode.ExtensionContext
+  _context?: vscode.ExtensionContext;
+  _vscode: any;
+  _extensionUri: vscode.Uri;
+  _settings: Settings;
+  _mainTab: WorkingFilesHistoryTab | undefined = undefined;
+  _app: any;
 
-  constructor(private readonly _extensionUri: vscode.Uri,
-    private context: vscode.ExtensionContext,
-    private settings: Settings
-  ) {
-    this._context = context;
+  constructor(params: {
+    vscode: any,
+    context: vscode.ExtensionContext,
+    settings: Settings,
+    app: any
+  }) {
+    this._vscode = params.vscode;
+    this._context = params.context;
+    this._extensionUri = this._context.extensionUri;
+    this._settings = params.settings;
+    this._view = this._vscode.WebviewView;
+    this._doc = this._vscode.TextDocument;
+    this._app = params.app;
   }
 
   _historyWorkData() {
@@ -23,25 +36,26 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   public async eventDataChange() {
     const monthList = await this._historyWorkData().getHistoryByMonth();
     if (this._view) {
-      this._view.webview.postMessage({
-        type: 'onHistoryChange',
-        value: monthList
-      })
+      this._update();
     }
   }
 
-  public async resolveWebviewView(webviewView: vscode.WebviewView) {
-    this._view = webviewView;
+  public async _update() {
+    this._view.webview.html = await this._getHtmlForWebview(this._view.webview);
+    this._view.webview.onDidReceiveMessage(this.onReceiveMessage());
+  }
 
-    webviewView.webview.options = {
-      // Allow scripts in the webview
-      enableScripts: true,
-      localResourceRoots: [this._extensionUri],
-    };
+  createNewMainTab(targetFolder: string): WorkingFilesHistoryTab {
+    const mainTab = new WorkingFilesHistoryTab({
+      vscode: this._vscode,
+      app: this._app
+    });
+    mainTab.createOrShow(this, targetFolder);
+    return mainTab;
+  }
 
-    webviewView.webview.html = await this._getHtmlForWebview(webviewView.webview);
-
-    webviewView.webview.onDidReceiveMessage(async (data) => {
+  onReceiveMessage() {
+    return (async (data) => {
       switch (data.type) {
         case "onInfo": {
           if (!data.value) {
@@ -66,26 +80,31 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           break;
         }
         case "onOpenWorkingFilesHistory": {
-          WorkingFilesHistoryTab.kill();
-          WorkingFilesHistoryTab.createOrShow(this._extensionUri, data.value);
+          if(this._mainTab !== undefined && this._mainTab._currentWinTab !== undefined){
+            this._mainTab._update(data.value);
+            return;
+          } else if(this._mainTab !== undefined && this._mainTab._currentWinTab === undefined){
+            this._mainTab = this.createNewMainTab(data.value);
+            return;
+          }
+          this._mainTab = this._mainTab = this.createNewMainTab(data.value);
           break;
         }
         case "getHistoryOfMonth": {
-          const list = await this._historyWorkData().getHistoryDatesByMonth(data.value)
-          // console.log(list);
-          webviewView.webview.postMessage({
+          const list = await this._historyWorkData().getHistoryDatesByMonth(data.value);
+          this._view.webview.postMessage({
             type: 'getHistoryOfMonth',
             value: {
               key: data.value,
               list: list
             }
-          })
+          });
           break;
         }
         case "settingHistoryIgnoreRemoveItem": {
-          const doRemoveHistItem = await this.settings.removeHistoryIgnoreItem(data.value);
-          if(doRemoveHistItem === false){
-            webviewView.webview.postMessage({
+          const doRemoveHistItem = await this._settings.removeHistoryIgnoreItem(data.value);
+          if (doRemoveHistItem === false) {
+            this._view.webview.postMessage({
               type: 'settingHistoryIgnoreCANCELRemoveItem',
               value: 'cancel'
             })
@@ -93,7 +112,21 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           break;
         }
       }
-    });
+    })
+  }
+
+  public async resolveWebviewView(webviewView: any, ExtensionContext: any, token: any) {
+    this._view = webviewView;
+
+    webviewView.webview.options = {
+      // Allow scripts in the webview
+      enableScripts: true,
+      localResourceRoots: [this._extensionUri],
+    };
+
+    webviewView.webview.html = await this._getHtmlForWebview(webviewView.webview);
+
+    webviewView.webview.onDidReceiveMessage(this.onReceiveMessage());
   }
 
   public revive(panel: vscode.WebviewView) {
@@ -118,11 +151,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     const nonce = getNonce();
     const initHistoryList = await this._historyWorkData().getHistoryByMonth();
     let settings = {
-      historyIgnore: this.settings.getHistoryIgnoreList(true),
+      historyIgnore: this._settings.getHistoryIgnoreList(true),
       devTool: false
     };
 
-    if(this._context.extensionMode === vscode.ExtensionMode.Development){
+    if (this._context.extensionMode === vscode.ExtensionMode.Development) {
       settings.devTool = true;
     }
 

@@ -32,15 +32,22 @@ ul.history-list>li>span {
 
 ul.history-list-collection {
     margin-bottom: 6px;
+    width: fit-content;
 }
 
 ul.history-list-collection>li {
     /* font-style: italic; */
-    margin-top: 6px;
+    margin-top: 3px;
     text-decoration: none;
+    border-bottom: 1px solid rgba(125, 125, 125, .3);
+    padding-bottom: 3px;
 }
 
-ul.history-list-collection>li>.info-path {
+ul.history-list-collection>li:last-child {
+    border-bottom: none;
+}
+
+ul.history-list-collection>li .info-path {
     color: #eea300;
     cursor: pointer;
 }
@@ -53,6 +60,33 @@ ul.history-list-collection>li .info-rename {
 ul.history-list-collection>li .info-change {
     color: #858585;
     margin-right: 15px;
+}
+
+ul.history-list-collection>li .list-item-text {
+    display: flex;
+    justify-content: space-between;
+}
+
+ul.history-list-collection>li .list-item-text .tools {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+ul.history-list-collection>li .list-item-text .button {
+    margin-left: 2px;
+    opacity: .4;
+}
+
+ul.history-list-collection>li .list-item-text .button:hover {
+    opacity: 1;
+}
+
+ul.history-list-collection>li .list-item-text .button.del {
+    color: rgb(241 76 76);
+}
+
+ul.history-list-collection>li .list-item-text .button.open {
+    color: var(--vscode-button-background);
 }
 
 .badge {
@@ -86,12 +120,12 @@ ul.sidebar-history-list ul.sidebar-history-item-list>li {
 }
 
 ul.sidebar-history-list>li:first-child>div.title {
-    border-top: 1px solid rgba(125,125,125,.3);
+    border-top: 1px solid rgba(125, 125, 125, .3);
 }
 
 ul.sidebar-history-list>li>div.title {
     cursor: pointer;
-    border-bottom: 1px solid rgba(125,125,125,.3);
+    border-bottom: 1px solid rgba(125, 125, 125, .3);
     padding: 3px 8px;
     color: rgb(255, 157, 0)
 }
@@ -106,7 +140,7 @@ ul.sidebar-history-list ul.sidebar-history-item-list>li>div {
 }
 
 ul.sidebar-history-list ul.sidebar-history-item-list>li:not(:last-child)>div {
-    border-bottom: 1px solid rgba(125,125,125,.3);
+    border-bottom: 1px solid rgba(125, 125, 125, .3);
 }
 
 .sidebar-history-box {
@@ -151,6 +185,7 @@ ul.sidebar-history-list ul.sidebar-history-item-list>li:not(:last-child)>div {
     overflow: hidden;
     max-width: 100px;
 }
+
 .sidebar-panel-bottom .left .clickable {
     margin-left: 0;
     margin-right: 10px;
@@ -179,6 +214,7 @@ ul.sidebar-history-list ul.sidebar-history-item-list>li:not(:last-child)>div {
 .pop-box.right {
     right: 30px;
 }
+
 .pop-box.show {
     display: block;
 }
@@ -200,6 +236,7 @@ ul.sidebar-history-list ul.sidebar-history-item-list>li:not(:last-child)>div {
     align-content: center;
     border-bottom: 1px solid #999;
 }
+
 .historyIgnoreList ul li:last-child {
     border-bottom: none;
 }
@@ -213,12 +250,12 @@ ul.sidebar-history-list ul.sidebar-history-item-list>li:not(:last-child)>div {
     white-space: nowrap;
 }
 
-.historyIgnoreList ul li .del-button {
+.historyIgnoreList ul li .del-slide {
     width: 30px;
     height: 24px;
     line-height: 24px;
     text-align: center;
-    padding-top:3px;
+    padding-top: 3px;
 }
 
 .switch {
@@ -279,4 +316,47 @@ input:checked+.slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+#modalBox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255,255,255,.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background: none;
+}
+
+#modalBox div#box {
+    box-shadow: inset 0 0 1px rgb(125 125 125 / 30%);
+    min-width: 250px;
+    max-width: 400px;
+    background: var(--vscode-editor-background);
+    padding: var(--container-paddding);
+    border: 1px solid rgba(125,125,125,.1);
+    border-radius: 3px;
+    padding-bottom: var(--container-paddding-half);
+}
+#modalBox div#box-tools {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: var(--container-paddding);
+}
+#modalBox div#box-tools button {
+    width: fit-content;
+    outline: none;
+    margin-left: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+#modalBox div#box-tools button.cancel {
+    background-color: var(--vscode-button-secondaryBackground);
 }

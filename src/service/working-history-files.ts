@@ -154,4 +154,23 @@ export class WorkingHistoryFiles {
         await this.diffPresenter.takeDiff(originFx, lastFx, date, historyItem.rpath);
     }
 
+    async deleteHistoryFile(data: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            if (!data) {
+                reject('Invalid data to process');
+            }
+            const targetFile = path.join(config.localDirectory, '/history', data.dirname, data.index + '.json');
+            if (fs.existsSync(targetFile)) {
+                fs.unlink(targetFile, (err) => {
+                    if (err) {
+                        reject('Error deleting history data.')
+                    } else {
+                        resolve(true);
+                    }
+                })
+                // resolve(true);
+            }
+        })
+    }
+
 }

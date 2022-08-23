@@ -10,9 +10,6 @@
     window.addEventListener("message", (event) => {
       const message = event.data;
       switch (message.type) {
-        case "onHistoryChange":
-          // historyList = [{ text: message.value, completed: false }, ...historyList];
-          break;
         case "getHistoryOfMonth":
           if (historyList && historyList.hasOwnProperty(message.value.key)) {
             historyList[message.value.key].list = message.value.list;

@@ -34,5 +34,8 @@ Command | Description
 ### 1.0.7
 Add the ".git" folder to be ignored automatically by the history recorder.
 
+### 1.0.8
+Delete history item
+
 ## License
 [MIT License](LICENSE)

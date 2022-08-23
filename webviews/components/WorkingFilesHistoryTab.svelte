@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { rejects } from "assert";
+
+  import { resolve } from "path";
+
   import { onMount } from "svelte";
 
   let projectFileHistory: any = workFilesHistory;
@@ -39,12 +43,49 @@
             event.data.value
           );
           break;
-
         default:
           break;
       }
     });
   });
+
+  const confirmPop = (text, callback) => {
+    const modal = document.createElement("div");
+    modal.setAttribute("id", "modalBox");
+    modal.addEventListener("click", () => {
+      modal.remove();
+    })
+
+    const bx = document.createElement("div");
+    bx.setAttribute("id", "box");
+    bx.innerHTML = text;
+
+    const toolBox = document.createElement("div");
+    toolBox.setAttribute("id", "box-tools");
+
+    const buttonOK = document.createElement("button");
+    buttonOK.className = "ok";
+    buttonOK.innerHTML = "OK";
+    buttonOK.setAttribute('type', 'button');
+    buttonOK.addEventListener('click', () => {
+      modal.remove();
+      callback();
+    });
+    const buttonCancel = document.createElement("button");
+    buttonCancel.className = "cancel";
+    buttonCancel.innerHTML = "Cancel";
+    buttonCancel.setAttribute('type', 'button');
+    buttonCancel.addEventListener('click',() => {
+      modal.remove();
+    })
+
+    toolBox.appendChild(buttonOK);
+    toolBox.appendChild(buttonCancel);
+    bx.appendChild(toolBox);
+
+    modal.appendChild(bx);
+    document.body.appendChild(modal);
+  };
 </script>
 
 <h2>Working File History</h2>
@@ -52,21 +93,53 @@
   <h3>{targetFolderData.date}</h3>
 {/if}
 {#if targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
-<ul class="history-list-collection">
+  <ul class="history-list-collection">
     {#each projectFileHistory[targetFolderData.key] as item}
       <li>
-        <span
-          class="info-path"
-          on:click={() => {
-            nadivscode.postMessage({
-              type: "seeHistoryFileDiff",
-              value: Object.assign(item, {
-                dirname: targetFolderData.key,
-              }),
-            });
-          }}>{item.rpath}</span
-        >
-        <!-- ( {item.index} ) -->
+        <div class="list-item-text">
+          <span
+            class="info-path"
+            on:click={() => {
+              nadivscode.postMessage({
+                type: "seeHistoryFileDiff",
+                value: Object.assign(item, {
+                  dirname: targetFolderData.key,
+                }),
+              });
+            }}>{item.rpath}</span
+          >
+          <!-- ( {item.index} ) -->
+          <span class="tools">
+            <span
+              class="button open"
+              on:click={() => {
+                nadivscode.postMessage({
+                  type: "seeHistoryFileDiff",
+                  value: Object.assign(item, {
+                    dirname: targetFolderData.key,
+                  }),
+                });
+              }}
+            >
+              <i class="icon-external-link-sign" />
+            </span>
+            <span
+              class="button del"
+              on:click={() => {
+                confirmPop(`Delete "${item.rpath}" from working history?`, () => {
+                  nadivscode.postMessage({
+                    type: "deleteHistoryFile",
+                    value: Object.assign(item, {
+                      dirname: targetFolderData.key,
+                    }),
+                  });
+                });
+              }}
+            >
+              <i class="icon-trash" />
+            </span>
+          </span>
+        </div>
         <div>
           <small>
             {#if item && item.hasOwnProperty("rename")}
@@ -102,18 +175,48 @@
             <ul class="history-list-collection">
               {#each historyCollections[historyDate.dirname] as item}
                 <li>
-                  <span
-                    class="info-path"
-                    on:click={() => {
-                      nadivscode.postMessage({
-                        type: "seeHistoryFileDiff",
-                        value: Object.assign(item, {
-                          dirname: historyDate.dirname,
-                        }),
-                      });
-                    }}>{item.rpath}</span
-                  >
-                  <!-- ( {item.index} ) -->
+                  <div class="list-item-text">
+                    <span
+                      class="info-path"
+                      on:click={() => {
+                        nadivscode.postMessage({
+                          type: "seeHistoryFileDiff",
+                          value: Object.assign(item, {
+                            dirname: historyDate.dirname,
+                          }),
+                        });
+                      }}>{item.rpath}</span
+                    >
+                    <!-- ( {item.index} ) -->
+                    <span class="tools">
+                      <span
+                        class="button open"
+                        on:click={() => {
+                          nadivscode.postMessage({
+                            type: "seeHistoryFileDiff",
+                            value: Object.assign(item, {
+                              dirname: historyDate.dirname,
+                            }),
+                          });
+                        }}
+                      >
+                        <i class="icon-external-link-sign" />
+                      </span>
+                      <span
+                        class="button del"
+                        on:click={() => {
+                          nadivscode.postMessage({
+                            type: "deleteHistoryFile",
+                            value: Object.assign(item, {
+                              dirname: historyDate.dirname,
+                            }),
+                          });
+                        }}
+                      >
+                        <i class="icon-trash" />
+                      </span>
+                    </span>
+                  </div>
                   <div>
                     <small>
                       {#if item && item.hasOwnProperty("rename")}

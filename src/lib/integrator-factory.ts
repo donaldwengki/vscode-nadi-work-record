@@ -6,6 +6,7 @@ import { SidebarProvider } from '../provider/sidebar-provider';
 import ContentProvider from '../provider/content-provider';
 import { UriService } from '../service/uri-service';
 import { Settings } from './settings';
+import { WorkingFilesHistoryTab } from '../provider/working-files-history-provider';
 
 export default class IntegratorFactory {
     private readonly _extensionContext: any;
@@ -14,11 +15,11 @@ export default class IntegratorFactory {
     private _uriService: UriService;
     private _contentProvider: ContentProvider;
 
-    constructor(extensionContext: NExecutionContext){
+    constructor(extensionContext: NExecutionContext) {
         this._extensionContext = extensionContext;
     }
 
-    create(){
+    create() {
         return new Integrator({
             vscode,
             command: this._getCommand(),
@@ -47,7 +48,13 @@ export default class IntegratorFactory {
     }
 
     _createSidebar() {
-        return new SidebarProvider(this._extensionContext.extensionUri, this._extensionContext, this._getSettings());
+        return new SidebarProvider({
+            vscode,
+            context: this._extensionContext,
+            settings: this._getSettings(),
+            // mainTab: this._createHistoryPresenterTab()
+            app: this
+        });
     }
 
     _getContentProvider() {
@@ -56,7 +63,7 @@ export default class IntegratorFactory {
     }
 
     _createContentProvider() {
-        return new ContentProvider({ uriService: this._getUriService()});
+        return new ContentProvider({ uriService: this._getUriService() });
     }
 
     _getUriService() {
@@ -75,6 +82,13 @@ export default class IntegratorFactory {
         return new Settings({
             vscode,
             context: this._extensionContext
+        });
+    }
+
+    _createHistoryPresenterTab() {
+        return new WorkingFilesHistoryTab({
+            vscode,
+            app: this,
         });
     }
 }

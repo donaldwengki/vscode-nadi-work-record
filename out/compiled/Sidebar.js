@@ -388,7 +388,7 @@ var app = (function () {
 
     			attr(span, "class", "slider round");
     			attr(label, "class", "switch");
-    			attr(div1, "class", "del-button");
+    			attr(div1, "class", "del-slide");
     		},
     		m(target, anchor) {
     			insert(target, li, anchor);
@@ -695,7 +695,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (38:4) {#if value.text != undefined || !isNaN(value.count)}
+    // (35:4) {#if value.text != undefined || !isNaN(value.count)}
     function create_if_block(ctx) {
     	let li;
     	let div;
@@ -774,7 +774,7 @@ var app = (function () {
     	};
     }
 
-    // (50:6) {#if value && value.hasOwnProperty("list")}
+    // (47:6) {#if value && value.hasOwnProperty("list")}
     function create_if_block_1(ctx) {
     	let ul;
     	let each_value_1 = /*value*/ ctx[7].list;
@@ -832,7 +832,7 @@ var app = (function () {
     	};
     }
 
-    // (65:16) {:else}
+    // (62:16) {:else}
     function create_else_block(ctx) {
     	let small;
 
@@ -852,7 +852,7 @@ var app = (function () {
     	};
     }
 
-    // (63:16) {#if parseInt(item.count) > 0}
+    // (60:16) {#if parseInt(item.count) > 0}
     function create_if_block_2(ctx) {
     	let span;
     	let t_value = /*item*/ ctx[10].count + "";
@@ -877,7 +877,7 @@ var app = (function () {
     	};
     }
 
-    // (52:10) {#each value.list as item}
+    // (49:10) {#each value.list as item}
     function create_each_block_1(ctx) {
     	let li;
     	let div;
@@ -950,7 +950,7 @@ var app = (function () {
     	};
     }
 
-    // (37:2) {#each Object.entries(historyList) as [key, value]}
+    // (34:2) {#each Object.entries(historyList) as [key, value]}
     function create_each_block(ctx) {
     	let show_if = /*value*/ ctx[7].text != undefined || !isNaN(/*value*/ ctx[7].count);
     	let if_block_anchor;
@@ -1130,9 +1130,6 @@ var app = (function () {
     			const message = event.data;
 
     			switch (message.type) {
-    				case "onHistoryChange":
-    					// historyList = [{ text: message.value, completed: false }, ...historyList];
-    					break;
     				case "getHistoryOfMonth":
     					if (historyList && historyList.hasOwnProperty(message.value.key)) {
     						$$invalidate(0, historyList[message.value.key].list = message.value.list, historyList);

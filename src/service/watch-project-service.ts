@@ -1,4 +1,4 @@
-;import * as vscode from "vscode";
+; import * as vscode from "vscode";
 import * as fs from 'fs';
 import * as path from 'path';
 import { config } from '../lib/global/config';
@@ -24,8 +24,8 @@ export class WatchWorkingDirectory {
         context: any,
         sidebar: any,
         settings: any
-    }) { 
-        this.historyDirectory = path.join(config.localDirectory,'/history');
+    }) {
+        this.historyDirectory = path.join(config.localDirectory, '/history');
         this.makeFile = new MakeFile();
         this.context = params.context;
         this.sidebar = params.sidebar;
@@ -49,14 +49,14 @@ export class WatchWorkingDirectory {
         }
     }
 
-    checkIfContentChanges(md5FileName: string, md5Content: string, fullPath: string,  content: string): boolean {
+    checkIfContentChanges(md5FileName: string, md5Content: string, fullPath: string, content: string): boolean {
         if (this.workingFiles && !this.workingFiles.hasOwnProperty(md5FileName)) {
             Object.assign(this.workingFiles, {
                 [md5FileName]: md5Content
             });
 
             this.storeDBOriginalFile(md5FileName, content);
-            
+
             return false;
         } else {
             const tmpDataFile = this.workingFiles[md5FileName as keyof typeof this.workingFiles];
@@ -76,7 +76,7 @@ export class WatchWorkingDirectory {
             }
             const md5Content = md5(content);
             const isSaveFileData = this.checkIfContentChanges(md5FileName, md5Content, fullPath, content);
-            if(isSaveFileData || event === 'rename'){
+            if (isSaveFileData || event === 'rename') {
                 this.storeDBFile({
                     md5FileName: md5FileName,
                     event: event,
@@ -84,13 +84,13 @@ export class WatchWorkingDirectory {
                     content: content
                 });
                 this.fireEventDataChange();
-            } 
+            }
         });
     }
 
     getTodayHistoryFolderName(): string {
         const dt = new Date();
-        const timeFolder = dt.setHours(0o0,0o0,0o0,0o00);
+        const timeFolder = dt.setHours(0o0, 0o0, 0o0, 0o00);
         return path.join(this.historyDirectory, `/${timeFolder.toString()}`);
     }
 
@@ -98,11 +98,11 @@ export class WatchWorkingDirectory {
         const todayHistoryStorage = this.getTodayHistoryFolderName();
         const historyFileName = path.join(todayHistoryStorage, `/origin/${md5FileName}`);
 
-        if(!fs.existsSync(path.dirname(historyFileName))){
+        if (!fs.existsSync(path.dirname(historyFileName))) {
             this.makeFile.makeDirSync(path.dirname(historyFileName));
         }
 
-        if(!fs.existsSync(historyFileName)){
+        if (!fs.existsSync(historyFileName)) {
             fs.writeFileSync(historyFileName, content);
         }
     }
@@ -112,17 +112,17 @@ export class WatchWorkingDirectory {
         const historyFileName = path.join(todayHistoryStorage, `/${fileData.md5FileName}.json`);
         const cuurenContentFileName = path.join(todayHistoryStorage, `/last/${fileData.md5FileName}`);
 
-        if(!fs.existsSync(path.dirname(historyFileName))){
+        if (!fs.existsSync(path.dirname(historyFileName))) {
             this.makeFile.makeDirSync(path.dirname(historyFileName));
         }
 
-        if(!fs.existsSync(path.dirname(cuurenContentFileName))){
+        if (!fs.existsSync(path.dirname(cuurenContentFileName))) {
             this.makeFile.makeDirSync(path.dirname(cuurenContentFileName));
         }
 
         let histData: any = {};
 
-        if(fs.existsSync(historyFileName)){
+        if (fs.existsSync(historyFileName)) {
             const existData = fs.readFileSync(historyFileName, { encoding: 'utf-8' });
             histData = JSON.parse(existData);
         }
@@ -135,8 +135,8 @@ export class WatchWorkingDirectory {
         fs.writeFileSync(cuurenContentFileName, fileData.content);
     }
 
-    fireEventDataChange(){
-        if(this.sidebar.eventDataChange !== undefined){
+    fireEventDataChange() {
+        if (this.sidebar.eventDataChange !== undefined) {
             this.sidebar.eventDataChange();
         }
     }
@@ -152,11 +152,11 @@ export class WatchWorkingDirectory {
                     let fullPath = path.join(workingDir, fileName);
                     let processHistory = true;
                     ingoreList.forEach((prefix) => {
-                        if(fileName.startsWith(prefix.trim())){
+                        if (fileName.startsWith(prefix.trim())) {
                             processHistory = false;
                         }
                     })
-                    if(processHistory){
+                    if (processHistory) {
                         $this.readFileChange(fullPath, event);
                     }
                 });

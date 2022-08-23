@@ -297,23 +297,23 @@ var app = (function () {
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[9] = list[i];
+    	child_ctx[14] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i];
+    	child_ctx[11] = list[i];
     	return child_ctx;
     }
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i];
+    	child_ctx[11] = list[i];
     	return child_ctx;
     }
 
-    // (39:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date")}
+    // (73:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date")}
     function create_if_block_7(ctx) {
     	let h3;
 
@@ -332,7 +332,7 @@ var app = (function () {
     	};
     }
 
-    // (75:0) {:else}
+    // (141:0) {:else}
     function create_else_block(ctx) {
     	let ul;
     	let each_value_1 = /*projectFileHistory*/ ctx[1];
@@ -390,7 +390,7 @@ var app = (function () {
     	};
     }
 
-    // (42:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
+    // (76:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
     function create_if_block(ctx) {
     	let ul;
     	let each_value = /*projectFileHistory*/ ctx[1][targetFolderData.key];
@@ -418,7 +418,7 @@ var app = (function () {
     			}
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*getDateHour, projectFileHistory, targetFolderData, nadivscode, Object*/ 6) {
+    			if (dirty & /*getDateHour, projectFileHistory, targetFolderData, confirmPop, nadivscode, Object*/ 14) {
     				each_value = /*projectFileHistory*/ ctx[1][targetFolderData.key];
     				let i;
 
@@ -448,12 +448,12 @@ var app = (function () {
     	};
     }
 
-    // (88:8) {#if historyCollections && historyCollections.hasOwnProperty(historyDate.dirname)}
+    // (154:8) {#if historyCollections && historyCollections.hasOwnProperty(historyDate.dirname)}
     function create_if_block_3(ctx) {
     	let if_block_anchor;
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*historyCollections*/ ctx[0][/*historyDate*/ ctx[9].dirname].length > 0) return create_if_block_4;
+    		if (/*historyCollections*/ ctx[0][/*historyDate*/ ctx[14].dirname].length > 0) return create_if_block_4;
     		return create_else_block_1;
     	}
 
@@ -489,7 +489,7 @@ var app = (function () {
     	};
     }
 
-    // (122:10) {:else}
+    // (218:10) {:else}
     function create_else_block_1(ctx) {
     	let div;
 
@@ -508,10 +508,10 @@ var app = (function () {
     	};
     }
 
-    // (89:10) {#if historyCollections[historyDate.dirname].length > 0}
+    // (155:10) {#if historyCollections[historyDate.dirname].length > 0}
     function create_if_block_4(ctx) {
     	let ul;
-    	let each_value_2 = /*historyCollections*/ ctx[0][/*historyDate*/ ctx[9].dirname];
+    	let each_value_2 = /*historyCollections*/ ctx[0][/*historyDate*/ ctx[14].dirname];
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value_2.length; i += 1) {
@@ -537,7 +537,7 @@ var app = (function () {
     		},
     		p(ctx, dirty) {
     			if (dirty & /*getDateHour, historyCollections, projectFileHistory, nadivscode, Object*/ 7) {
-    				each_value_2 = /*historyCollections*/ ctx[0][/*historyDate*/ ctx[9].dirname];
+    				each_value_2 = /*historyCollections*/ ctx[0][/*historyDate*/ ctx[14].dirname];
     				let i;
 
     				for (i = 0; i < each_value_2.length; i += 1) {
@@ -566,10 +566,10 @@ var app = (function () {
     	};
     }
 
-    // (107:22) {#if item && item.hasOwnProperty("rename")}
+    // (203:22) {#if item && item.hasOwnProperty("rename")}
     function create_if_block_6(ctx) {
     	let span;
-    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].rename) + "";
+    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[11].rename) + "";
     	let t0;
     	let t1;
 
@@ -586,7 +586,7 @@ var app = (function () {
     			append(span, t1);
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*historyCollections*/ 1 && t0_value !== (t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].rename) + "")) set_data(t0, t0_value);
+    			if (dirty & /*historyCollections*/ 1 && t0_value !== (t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[11].rename) + "")) set_data(t0, t0_value);
     		},
     		d(detaching) {
     			if (detaching) detach(span);
@@ -594,10 +594,10 @@ var app = (function () {
     	};
     }
 
-    // (112:22) {#if item && item.hasOwnProperty("change")}
+    // (208:22) {#if item && item.hasOwnProperty("change")}
     function create_if_block_5(ctx) {
     	let span;
-    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].change) + "";
+    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[11].change) + "";
     	let t0;
     	let t1;
 
@@ -614,7 +614,7 @@ var app = (function () {
     			append(span, t1);
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*historyCollections*/ 1 && t0_value !== (t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].change) + "")) set_data(t0, t0_value);
+    			if (dirty & /*historyCollections*/ 1 && t0_value !== (t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[11].change) + "")) set_data(t0, t0_value);
     		},
     		d(detaching) {
     			if (detaching) detach(span);
@@ -622,24 +622,38 @@ var app = (function () {
     	};
     }
 
-    // (91:14) {#each historyCollections[historyDate.dirname] as item}
+    // (157:14) {#each historyCollections[historyDate.dirname] as item}
     function create_each_block_2(ctx) {
     	let li;
-    	let span;
-    	let t0_value = /*item*/ ctx[6].rpath + "";
+    	let div0;
+    	let span0;
+    	let t0_value = /*item*/ ctx[11].rpath + "";
     	let t0;
     	let t1;
-    	let div;
-    	let small;
-    	let show_if_1 = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("rename");
+    	let span3;
+    	let span1;
     	let t2;
-    	let show_if = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("change");
+    	let span2;
     	let t3;
+    	let div1;
+    	let small;
+    	let show_if_1 = /*item*/ ctx[11] && /*item*/ ctx[11].hasOwnProperty("rename");
+    	let t4;
+    	let show_if = /*item*/ ctx[11] && /*item*/ ctx[11].hasOwnProperty("change");
+    	let t5;
     	let mounted;
     	let dispose;
 
-    	function click_handler_2() {
-    		return /*click_handler_2*/ ctx[5](/*item*/ ctx[6], /*historyDate*/ ctx[9]);
+    	function click_handler_4() {
+    		return /*click_handler_4*/ ctx[8](/*item*/ ctx[11], /*historyDate*/ ctx[14]);
+    	}
+
+    	function click_handler_5() {
+    		return /*click_handler_5*/ ctx[9](/*item*/ ctx[11], /*historyDate*/ ctx[14]);
+    	}
+
+    	function click_handler_6() {
+    		return /*click_handler_6*/ ctx[10](/*item*/ ctx[11], /*historyDate*/ ctx[14]);
     	}
 
     	let if_block0 = show_if_1 && create_if_block_6(ctx);
@@ -648,38 +662,61 @@ var app = (function () {
     	return {
     		c() {
     			li = element("li");
-    			span = element("span");
+    			div0 = element("div");
+    			span0 = element("span");
     			t0 = text(t0_value);
     			t1 = space();
-    			div = element("div");
+    			span3 = element("span");
+    			span1 = element("span");
+    			span1.innerHTML = `<i class="icon-external-link-sign"></i>`;
+    			t2 = space();
+    			span2 = element("span");
+    			span2.innerHTML = `<i class="icon-trash"></i>`;
+    			t3 = space();
+    			div1 = element("div");
     			small = element("small");
     			if (if_block0) if_block0.c();
-    			t2 = space();
+    			t4 = space();
     			if (if_block1) if_block1.c();
-    			t3 = space();
-    			attr(span, "class", "info-path");
+    			t5 = space();
+    			attr(span0, "class", "info-path");
+    			attr(span1, "class", "button open");
+    			attr(span2, "class", "button del");
+    			attr(span3, "class", "tools");
+    			attr(div0, "class", "list-item-text");
     		},
     		m(target, anchor) {
     			insert(target, li, anchor);
-    			append(li, span);
-    			append(span, t0);
-    			append(li, t1);
-    			append(li, div);
-    			append(div, small);
-    			if (if_block0) if_block0.m(small, null);
-    			append(small, t2);
-    			if (if_block1) if_block1.m(small, null);
+    			append(li, div0);
+    			append(div0, span0);
+    			append(span0, t0);
+    			append(div0, t1);
+    			append(div0, span3);
+    			append(span3, span1);
+    			append(span3, t2);
+    			append(span3, span2);
     			append(li, t3);
+    			append(li, div1);
+    			append(div1, small);
+    			if (if_block0) if_block0.m(small, null);
+    			append(small, t4);
+    			if (if_block1) if_block1.m(small, null);
+    			append(li, t5);
 
     			if (!mounted) {
-    				dispose = listen(span, "click", click_handler_2);
+    				dispose = [
+    					listen(span0, "click", click_handler_4),
+    					listen(span1, "click", click_handler_5),
+    					listen(span2, "click", click_handler_6)
+    				];
+
     				mounted = true;
     			}
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*historyCollections*/ 1 && t0_value !== (t0_value = /*item*/ ctx[6].rpath + "")) set_data(t0, t0_value);
-    			if (dirty & /*historyCollections*/ 1) show_if_1 = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("rename");
+    			if (dirty & /*historyCollections*/ 1 && t0_value !== (t0_value = /*item*/ ctx[11].rpath + "")) set_data(t0, t0_value);
+    			if (dirty & /*historyCollections*/ 1) show_if_1 = /*item*/ ctx[11] && /*item*/ ctx[11].hasOwnProperty("rename");
 
     			if (show_if_1) {
     				if (if_block0) {
@@ -687,14 +724,14 @@ var app = (function () {
     				} else {
     					if_block0 = create_if_block_6(ctx);
     					if_block0.c();
-    					if_block0.m(small, t2);
+    					if_block0.m(small, t4);
     				}
     			} else if (if_block0) {
     				if_block0.d(1);
     				if_block0 = null;
     			}
 
-    			if (dirty & /*historyCollections*/ 1) show_if = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("change");
+    			if (dirty & /*historyCollections*/ 1) show_if = /*item*/ ctx[11] && /*item*/ ctx[11].hasOwnProperty("change");
 
     			if (show_if) {
     				if (if_block1) {
@@ -714,25 +751,25 @@ var app = (function () {
     			if (if_block0) if_block0.d();
     			if (if_block1) if_block1.d();
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
     }
 
-    // (77:4) {#each projectFileHistory as historyDate}
+    // (143:4) {#each projectFileHistory as historyDate}
     function create_each_block_1(ctx) {
     	let li;
     	let span;
-    	let t0_value = /*historyDate*/ ctx[9].text + "";
+    	let t0_value = /*historyDate*/ ctx[14].text + "";
     	let t0;
     	let t1;
-    	let show_if = /*historyCollections*/ ctx[0] && /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[9].dirname);
+    	let show_if = /*historyCollections*/ ctx[0] && /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[14].dirname);
     	let t2;
     	let mounted;
     	let dispose;
 
-    	function click_handler_1() {
-    		return /*click_handler_1*/ ctx[4](/*historyDate*/ ctx[9]);
+    	function click_handler_3() {
+    		return /*click_handler_3*/ ctx[7](/*historyDate*/ ctx[14]);
     	}
 
     	let if_block = show_if && create_if_block_3(ctx);
@@ -755,13 +792,13 @@ var app = (function () {
     			append(li, t2);
 
     			if (!mounted) {
-    				dispose = listen(span, "click", click_handler_1);
+    				dispose = listen(span, "click", click_handler_3);
     				mounted = true;
     			}
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*historyCollections*/ 1) show_if = /*historyCollections*/ ctx[0] && /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[9].dirname);
+    			if (dirty & /*historyCollections*/ 1) show_if = /*historyCollections*/ ctx[0] && /*historyCollections*/ ctx[0].hasOwnProperty(/*historyDate*/ ctx[14].dirname);
 
     			if (show_if) {
     				if (if_block) {
@@ -785,10 +822,10 @@ var app = (function () {
     	};
     }
 
-    // (60:12) {#if item && item.hasOwnProperty("rename")}
+    // (126:12) {#if item && item.hasOwnProperty("rename")}
     function create_if_block_2(ctx) {
     	let span;
-    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].rename) + "";
+    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[11].rename) + "";
     	let t0;
     	let t1;
 
@@ -811,10 +848,10 @@ var app = (function () {
     	};
     }
 
-    // (65:12) {#if item && item.hasOwnProperty("change")}
+    // (131:12) {#if item && item.hasOwnProperty("change")}
     function create_if_block_1(ctx) {
     	let span;
-    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[6].change) + "";
+    	let t0_value = /*getDateHour*/ ctx[2](/*item*/ ctx[11].change) + "";
     	let t0;
     	let t1;
 
@@ -837,24 +874,38 @@ var app = (function () {
     	};
     }
 
-    // (44:4) {#each projectFileHistory[targetFolderData.key] as item}
+    // (78:4) {#each projectFileHistory[targetFolderData.key] as item}
     function create_each_block(ctx) {
     	let li;
-    	let span;
-    	let t0_value = /*item*/ ctx[6].rpath + "";
+    	let div0;
+    	let span0;
+    	let t0_value = /*item*/ ctx[11].rpath + "";
     	let t0;
     	let t1;
-    	let div;
-    	let small;
-    	let show_if_1 = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("rename");
+    	let span3;
+    	let span1;
     	let t2;
-    	let show_if = /*item*/ ctx[6] && /*item*/ ctx[6].hasOwnProperty("change");
+    	let span2;
     	let t3;
+    	let div1;
+    	let small;
+    	let show_if_1 = /*item*/ ctx[11] && /*item*/ ctx[11].hasOwnProperty("rename");
+    	let t4;
+    	let show_if = /*item*/ ctx[11] && /*item*/ ctx[11].hasOwnProperty("change");
+    	let t5;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[3](/*item*/ ctx[6]);
+    		return /*click_handler*/ ctx[4](/*item*/ ctx[11]);
+    	}
+
+    	function click_handler_1() {
+    		return /*click_handler_1*/ ctx[5](/*item*/ ctx[11]);
+    	}
+
+    	function click_handler_2() {
+    		return /*click_handler_2*/ ctx[6](/*item*/ ctx[11]);
     	}
 
     	let if_block0 = show_if_1 && create_if_block_2(ctx);
@@ -863,31 +914,54 @@ var app = (function () {
     	return {
     		c() {
     			li = element("li");
-    			span = element("span");
+    			div0 = element("div");
+    			span0 = element("span");
     			t0 = text(t0_value);
     			t1 = space();
-    			div = element("div");
+    			span3 = element("span");
+    			span1 = element("span");
+    			span1.innerHTML = `<i class="icon-external-link-sign"></i>`;
+    			t2 = space();
+    			span2 = element("span");
+    			span2.innerHTML = `<i class="icon-trash"></i>`;
+    			t3 = space();
+    			div1 = element("div");
     			small = element("small");
     			if (if_block0) if_block0.c();
-    			t2 = space();
+    			t4 = space();
     			if (if_block1) if_block1.c();
-    			t3 = space();
-    			attr(span, "class", "info-path");
+    			t5 = space();
+    			attr(span0, "class", "info-path");
+    			attr(span1, "class", "button open");
+    			attr(span2, "class", "button del");
+    			attr(span3, "class", "tools");
+    			attr(div0, "class", "list-item-text");
     		},
     		m(target, anchor) {
     			insert(target, li, anchor);
-    			append(li, span);
-    			append(span, t0);
-    			append(li, t1);
-    			append(li, div);
-    			append(div, small);
-    			if (if_block0) if_block0.m(small, null);
-    			append(small, t2);
-    			if (if_block1) if_block1.m(small, null);
+    			append(li, div0);
+    			append(div0, span0);
+    			append(span0, t0);
+    			append(div0, t1);
+    			append(div0, span3);
+    			append(span3, span1);
+    			append(span3, t2);
+    			append(span3, span2);
     			append(li, t3);
+    			append(li, div1);
+    			append(div1, small);
+    			if (if_block0) if_block0.m(small, null);
+    			append(small, t4);
+    			if (if_block1) if_block1.m(small, null);
+    			append(li, t5);
 
     			if (!mounted) {
-    				dispose = listen(span, "click", click_handler);
+    				dispose = [
+    					listen(span0, "click", click_handler),
+    					listen(span1, "click", click_handler_1),
+    					listen(span2, "click", click_handler_2)
+    				];
+
     				mounted = true;
     			}
     		},
@@ -901,7 +975,7 @@ var app = (function () {
     			if (if_block0) if_block0.d();
     			if (if_block1) if_block1.d();
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
     }
@@ -994,6 +1068,45 @@ var app = (function () {
     		});
     	});
 
+    	const confirmPop = (text, callback) => {
+    		const modal = document.createElement("div");
+    		modal.setAttribute("id", "modalBox");
+
+    		modal.addEventListener("click", () => {
+    			modal.remove();
+    		});
+
+    		const bx = document.createElement("div");
+    		bx.setAttribute("id", "box");
+    		bx.innerHTML = text;
+    		const toolBox = document.createElement("div");
+    		toolBox.setAttribute("id", "box-tools");
+    		const buttonOK = document.createElement("button");
+    		buttonOK.className = "ok";
+    		buttonOK.innerHTML = "OK";
+    		buttonOK.setAttribute('type', 'button');
+
+    		buttonOK.addEventListener('click', () => {
+    			modal.remove();
+    			callback();
+    		});
+
+    		const buttonCancel = document.createElement("button");
+    		buttonCancel.className = "cancel";
+    		buttonCancel.innerHTML = "Cancel";
+    		buttonCancel.setAttribute('type', 'button');
+
+    		buttonCancel.addEventListener('click', () => {
+    			modal.remove();
+    		});
+
+    		toolBox.appendChild(buttonOK);
+    		toolBox.appendChild(buttonCancel);
+    		bx.appendChild(toolBox);
+    		modal.appendChild(bx);
+    		document.body.appendChild(modal);
+    	};
+
     	const click_handler = item => {
     		nadivscode.postMessage({
     			type: "seeHistoryFileDiff",
@@ -1001,16 +1114,46 @@ var app = (function () {
     		});
     	};
 
-    	const click_handler_1 = historyDate => {
+    	const click_handler_1 = item => {
+    		nadivscode.postMessage({
+    			type: "seeHistoryFileDiff",
+    			value: Object.assign(item, { dirname: targetFolderData.key })
+    		});
+    	};
+
+    	const click_handler_2 = item => {
+    		confirmPop(`Delete "${item.rpath}" from working history?`, () => {
+    			nadivscode.postMessage({
+    				type: "deleteHistoryFile",
+    				value: Object.assign(item, { dirname: targetFolderData.key })
+    			});
+    		});
+    	};
+
+    	const click_handler_3 = historyDate => {
     		nadivscode.postMessage({
     			type: "getHistoryCollections",
     			value: historyDate.path
     		});
     	};
 
-    	const click_handler_2 = (item, historyDate) => {
+    	const click_handler_4 = (item, historyDate) => {
     		nadivscode.postMessage({
     			type: "seeHistoryFileDiff",
+    			value: Object.assign(item, { dirname: historyDate.dirname })
+    		});
+    	};
+
+    	const click_handler_5 = (item, historyDate) => {
+    		nadivscode.postMessage({
+    			type: "seeHistoryFileDiff",
+    			value: Object.assign(item, { dirname: historyDate.dirname })
+    		});
+    	};
+
+    	const click_handler_6 = (item, historyDate) => {
+    		nadivscode.postMessage({
+    			type: "deleteHistoryFile",
     			value: Object.assign(item, { dirname: historyDate.dirname })
     		});
     	};
@@ -1019,9 +1162,14 @@ var app = (function () {
     		historyCollections,
     		projectFileHistory,
     		getDateHour,
+    		confirmPop,
     		click_handler,
     		click_handler_1,
-    		click_handler_2
+    		click_handler_2,
+    		click_handler_3,
+    		click_handler_4,
+    		click_handler_5,
+    		click_handler_6
     	];
     }
 
