@@ -66,6 +66,25 @@
                   <small class="italic gray">No files changed</small>
                 {/if}
               </div>
+
+              <span class="tools">
+                <span
+                  class="button open"
+                  on:click={() => {
+                    console.log('test')
+                  }}
+                >
+                  <i class="icon-external-link-sign" />
+                </span>
+                <span
+                  class="button del"
+                  on:click={() => {
+                    console.log('test')
+                  }}
+                >
+                  <i class="icon-trash" />
+                </span>
+              </span>
             </li>
           {/each}
         </ul>

@@ -80,10 +80,10 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           break;
         }
         case "onOpenWorkingFilesHistory": {
-          if(this._mainTab !== undefined && this._mainTab._currentWinTab !== undefined){
+          if (this._mainTab !== undefined && this._mainTab._currentWinTab !== undefined) {
             this._mainTab._update(data.value);
             return;
-          } else if(this._mainTab !== undefined && this._mainTab._currentWinTab === undefined){
+          } else if (this._mainTab !== undefined && this._mainTab._currentWinTab === undefined) {
             this._mainTab = this.createNewMainTab(data.value);
             return;
           }
@@ -147,6 +147,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
     const stylesPathNadiCss = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "media", "nadi-extension.css")
     );
+    const fontaw = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "font-awesome.css")
+    );
 
     const nonce = getNonce();
     const initHistoryList = await this._historyWorkData().getHistoryByMonth();
@@ -170,6 +173,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
                 <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource
       }; script-src 'nonce-${nonce}';">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link href="${fontaw}" rel="stylesheet">
                 <link href="${styleResetUri}" rel="stylesheet">
                 <link href="${styleVSCodeUri}" rel="stylesheet">
                 <link href="${stylesPathNadiCss}" rel="stylesheet">

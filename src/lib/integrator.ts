@@ -72,6 +72,16 @@ export default class Integrator {
                 registrar: 'registerCommand',
                 handler: this._commandHandler
             },
+            {
+                name: 'add-to-compare',
+                registrar: 'registerCommand',
+                handler: this._commandHandler
+            },
+            {
+                name: 'do-compare',
+                registrar: 'registerCommand',
+                handler: this._commandHandler
+            },
         ];
     }
 

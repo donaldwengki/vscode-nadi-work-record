@@ -335,7 +335,7 @@ input:checked+.slider:before {
 #modalBox div#box {
     box-shadow: inset 0 0 1px rgb(125 125 125 / 30%);
     min-width: 250px;
-    max-width: 400px;
+    max-width: calc(100vw - 100px);
     background: var(--vscode-editor-background);
     padding: var(--container-paddding);
     border: 1px solid rgba(125,125,125,.1);

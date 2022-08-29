@@ -684,14 +684,14 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i][0];
-    	child_ctx[7] = list[i][1];
+    	child_ctx[7] = list[i][0];
+    	child_ctx[8] = list[i][1];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[10] = list[i];
+    	child_ctx[11] = list[i];
     	return child_ctx;
     }
 
@@ -699,21 +699,21 @@ var app = (function () {
     function create_if_block(ctx) {
     	let li;
     	let div;
-    	let t0_value = /*value*/ ctx[7].text + "";
+    	let t0_value = /*value*/ ctx[8].text + "";
     	let t0;
     	let t1;
     	let span;
-    	let t2_value = /*value*/ ctx[7].count + "";
+    	let t2_value = /*value*/ ctx[8].count + "";
     	let t2;
     	let t3;
-    	let show_if = /*value*/ ctx[7] && /*value*/ ctx[7].hasOwnProperty("list");
+    	let show_if = /*value*/ ctx[8] && /*value*/ ctx[8].hasOwnProperty("list");
     	let t4;
     	let mounted;
     	let dispose;
     	let if_block = show_if && create_if_block_1(ctx);
 
-    	function click_handler_2() {
-    		return /*click_handler_2*/ ctx[4](/*key*/ ctx[6]);
+    	function click_handler_3() {
+    		return /*click_handler_3*/ ctx[5](/*key*/ ctx[7]);
     	}
 
     	return {
@@ -742,15 +742,15 @@ var app = (function () {
     			append(li, t4);
 
     			if (!mounted) {
-    				dispose = listen(li, "click", click_handler_2);
+    				dispose = listen(li, "click", click_handler_3);
     				mounted = true;
     			}
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*value*/ ctx[7].text + "")) set_data(t0, t0_value);
-    			if (dirty & /*historyList*/ 1 && t2_value !== (t2_value = /*value*/ ctx[7].count + "")) set_data(t2, t2_value);
-    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[7] && /*value*/ ctx[7].hasOwnProperty("list");
+    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*value*/ ctx[8].text + "")) set_data(t0, t0_value);
+    			if (dirty & /*historyList*/ 1 && t2_value !== (t2_value = /*value*/ ctx[8].count + "")) set_data(t2, t2_value);
+    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[8] && /*value*/ ctx[8].hasOwnProperty("list");
 
     			if (show_if) {
     				if (if_block) {
@@ -777,7 +777,7 @@ var app = (function () {
     // (47:6) {#if value && value.hasOwnProperty("list")}
     function create_if_block_1(ctx) {
     	let ul;
-    	let each_value_1 = /*value*/ ctx[7].list;
+    	let each_value_1 = /*value*/ ctx[8].list;
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -802,8 +802,8 @@ var app = (function () {
     			}
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*nadivscode, Object, historyList, parseInt*/ 1) {
-    				each_value_1 = /*value*/ ctx[7].list;
+    			if (dirty & /*console, nadivscode, Object, historyList, parseInt*/ 1) {
+    				each_value_1 = /*value*/ ctx[8].list;
     				let i;
 
     				for (i = 0; i < each_value_1.length; i += 1) {
@@ -855,7 +855,7 @@ var app = (function () {
     // (60:16) {#if parseInt(item.count) > 0}
     function create_if_block_2(ctx) {
     	let span;
-    	let t_value = /*item*/ ctx[10].count + "";
+    	let t_value = /*item*/ ctx[11].count + "";
     	let t;
 
     	return {
@@ -869,7 +869,7 @@ var app = (function () {
     			append(span, t);
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*historyList*/ 1 && t_value !== (t_value = /*item*/ ctx[10].count + "")) set_data(t, t_value);
+    			if (dirty & /*historyList*/ 1 && t_value !== (t_value = /*item*/ ctx[11].count + "")) set_data(t, t_value);
     		},
     		d(detaching) {
     			if (detaching) detach(span);
@@ -881,17 +881,22 @@ var app = (function () {
     function create_each_block_1(ctx) {
     	let li;
     	let div;
-    	let t0_value = /*item*/ ctx[10].text + "";
+    	let t0_value = /*item*/ ctx[11].text + "";
     	let t0;
     	let t1;
     	let show_if;
     	let t2;
+    	let span2;
+    	let span0;
+    	let t3;
+    	let span1;
+    	let t4;
     	let mounted;
     	let dispose;
 
     	function select_block_type(ctx, dirty) {
     		if (dirty & /*historyList*/ 1) show_if = null;
-    		if (show_if == null) show_if = !!(parseInt(/*item*/ ctx[10].count) > 0);
+    		if (show_if == null) show_if = !!(parseInt(/*item*/ ctx[11].count) > 0);
     		if (show_if) return create_if_block_2;
     		return create_else_block;
     	}
@@ -899,8 +904,8 @@ var app = (function () {
     	let current_block_type = select_block_type(ctx, -1);
     	let if_block = current_block_type(ctx);
 
-    	function click_handler_1() {
-    		return /*click_handler_1*/ ctx[3](/*item*/ ctx[10]);
+    	function click_handler() {
+    		return /*click_handler*/ ctx[2](/*item*/ ctx[11]);
     	}
 
     	return {
@@ -911,6 +916,16 @@ var app = (function () {
     			t1 = space();
     			if_block.c();
     			t2 = space();
+    			span2 = element("span");
+    			span0 = element("span");
+    			span0.innerHTML = `<i class="icon-external-link-sign"></i>`;
+    			t3 = space();
+    			span1 = element("span");
+    			span1.innerHTML = `<i class="icon-trash"></i>`;
+    			t4 = space();
+    			attr(span0, "class", "button open");
+    			attr(span1, "class", "button del");
+    			attr(span2, "class", "tools");
     		},
     		m(target, anchor) {
     			insert(target, li, anchor);
@@ -919,15 +934,25 @@ var app = (function () {
     			append(div, t1);
     			if_block.m(div, null);
     			append(li, t2);
+    			append(li, span2);
+    			append(span2, span0);
+    			append(span2, t3);
+    			append(span2, span1);
+    			append(li, t4);
 
     			if (!mounted) {
-    				dispose = listen(div, "click", click_handler_1);
+    				dispose = [
+    					listen(div, "click", click_handler),
+    					listen(span0, "click", /*click_handler_1*/ ctx[3]),
+    					listen(span1, "click", /*click_handler_2*/ ctx[4])
+    				];
+
     				mounted = true;
     			}
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*item*/ ctx[10].text + "")) set_data(t0, t0_value);
+    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*item*/ ctx[11].text + "")) set_data(t0, t0_value);
 
     			if (current_block_type === (current_block_type = select_block_type(ctx, dirty)) && if_block) {
     				if_block.p(ctx, dirty);
@@ -945,14 +970,14 @@ var app = (function () {
     			if (detaching) detach(li);
     			if_block.d();
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
     }
 
     // (34:2) {#each Object.entries(historyList) as [key, value]}
     function create_each_block(ctx) {
-    	let show_if = /*value*/ ctx[7].text != undefined || !isNaN(/*value*/ ctx[7].count);
+    	let show_if = /*value*/ ctx[8].text != undefined || !isNaN(/*value*/ ctx[8].count);
     	let if_block_anchor;
     	let if_block = show_if && create_if_block(ctx);
 
@@ -966,7 +991,7 @@ var app = (function () {
     			insert(target, if_block_anchor, anchor);
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[7].text != undefined || !isNaN(/*value*/ ctx[7].count);
+    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[8].text != undefined || !isNaN(/*value*/ ctx[8].count);
 
     			if (show_if) {
     				if (if_block) {
@@ -989,18 +1014,14 @@ var app = (function () {
     }
 
     function create_fragment(ctx) {
-    	let button;
-    	let t1;
     	let h4;
-    	let t3;
+    	let t1;
     	let div;
     	let ul;
-    	let t4;
+    	let t2;
     	let child;
     	let updating_value;
     	let current;
-    	let mounted;
-    	let dispose;
     	let each_value = Object.entries(/*historyList*/ ctx[0]);
     	let each_blocks = [];
 
@@ -1009,7 +1030,7 @@ var app = (function () {
     	}
 
     	function child_value_binding(value) {
-    		/*child_value_binding*/ ctx[5](value);
+    		/*child_value_binding*/ ctx[6](value);
     	}
 
     	let child_props = {};
@@ -1023,12 +1044,9 @@ var app = (function () {
 
     	return {
     		c() {
-    			button = element("button");
-    			button.textContent = "All History By Date";
-    			t1 = space();
     			h4 = element("h4");
     			h4.innerHTML = `<b>Work History</b>`;
-    			t3 = space();
+    			t1 = space();
     			div = element("div");
     			ul = element("ul");
 
@@ -1036,16 +1054,14 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			t4 = space();
+    			t2 = space();
     			create_component(child.$$.fragment);
     			attr(ul, "class", "sidebar-history-list");
     			attr(div, "class", "sidebar-history-box");
     		},
     		m(target, anchor) {
-    			insert(target, button, anchor);
-    			insert(target, t1, anchor);
     			insert(target, h4, anchor);
-    			insert(target, t3, anchor);
+    			insert(target, t1, anchor);
     			insert(target, div, anchor);
     			append(div, ul);
 
@@ -1053,17 +1069,12 @@ var app = (function () {
     				each_blocks[i].m(ul, null);
     			}
 
-    			insert(target, t4, anchor);
+    			insert(target, t2, anchor);
     			mount_component(child, target, anchor);
     			current = true;
-
-    			if (!mounted) {
-    				dispose = listen(button, "click", /*click_handler*/ ctx[2]);
-    				mounted = true;
-    			}
     		},
     		p(ctx, [dirty]) {
-    			if (dirty & /*nadivscode, Object, historyList, parseInt, undefined, isNaN*/ 1) {
+    			if (dirty & /*nadivscode, Object, historyList, console, parseInt, undefined, isNaN*/ 1) {
     				each_value = Object.entries(/*historyList*/ ctx[0]);
     				let i;
 
@@ -1106,16 +1117,12 @@ var app = (function () {
     			current = false;
     		},
     		d(detaching) {
-    			if (detaching) detach(button);
-    			if (detaching) detach(t1);
     			if (detaching) detach(h4);
-    			if (detaching) detach(t3);
+    			if (detaching) detach(t1);
     			if (detaching) detach(div);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach(t4);
+    			if (detaching) detach(t2);
     			destroy_component(child, detaching);
-    			mounted = false;
-    			dispose();
     		}
     	};
     }
@@ -1139,21 +1146,22 @@ var app = (function () {
     		});
     	});
 
-    	const click_handler = () => {
-    		nadivscode.postMessage({
-    			type: "onOpenWorkingFilesHistory",
-    			value: undefined
-    		});
-    	};
-
-    	const click_handler_1 = item => {
+    	const click_handler = item => {
     		nadivscode.postMessage({
     			type: 'onOpenWorkingFilesHistory',
     			value: item.dirname
     		});
     	};
 
-    	const click_handler_2 = key => {
+    	const click_handler_1 = () => {
+    		console.log('test');
+    	};
+
+    	const click_handler_2 = () => {
+    		console.log('test');
+    	};
+
+    	const click_handler_3 = key => {
     		nadivscode.postMessage({ type: "getHistoryOfMonth", value: key });
     	};
 
@@ -1168,6 +1176,7 @@ var app = (function () {
     		click_handler,
     		click_handler_1,
     		click_handler_2,
+    		click_handler_3,
     		child_value_binding
     	];
     }

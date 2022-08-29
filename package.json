@@ -3,7 +3,7 @@
   "displayName": "NDHistory Work Record",
   "description": "File change history records.",
   "publisher": "DonaldWengki",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "engines": {
     "vscode": "^1.70.0"
   },
@@ -29,6 +29,8 @@
     "onCommand:nadi.create-folder",
     "onCommand:nadi.create-file",
     "onCommand:nadi.history-ignore-file",
+    "onCommand:nadi.add-to-compare",
+    "onCommand:nadi.do-compare",
     "onView:nadi-sidebar"
   ],
   "main": "./dist/extension.js",
@@ -66,8 +68,15 @@
       },
       {
         "command": "nadi.history-ignore-file",
-        "category": "NADI",
         "title": "NADI History: Ignore File/Folder"
+      },
+      {
+        "command": "nadi.add-to-compare",
+        "title": "NADI: Add file to compare"
+      },
+      {
+        "command": "nadi.do-compare",
+        "title": "NADI: Do compare"
       }
     ],
     "keybindings": [
@@ -85,6 +94,16 @@
         {
           "when": "resourceScheme == file",
           "command": "nadi.history-ignore-file",
+          "group": "NADI"
+        },
+        {
+          "when": "resourceScheme == file",
+          "command": "nadi.add-to-compare",
+          "group": "NADI"
+        },
+        {
+          "when": "resourceScheme == file",
+          "command": "nadi.do-compare",
           "group": "NADI"
         }
       ]
