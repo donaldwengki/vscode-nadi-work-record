@@ -111,6 +111,19 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           }
           break;
         }
+        case "delHistoryFolder": {
+          this._historyWorkData().deleteHistoryFolder(data.value)
+            .then(() => {
+              this._view.webview.postMessage({
+                type: 'removeDateHistoryOfMonth',
+                value: data.value
+              })
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          break;
+        }
       }
     })
   }

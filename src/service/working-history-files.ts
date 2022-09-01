@@ -173,4 +173,87 @@ export class WorkingHistoryFiles {
         })
     }
 
+    deleteHistoryFolder(data: any): Promise<any> {
+        return new Promise(async (resolve, reject) => {
+            if (!data) {
+                reject('Invalid data to process');
+            }
+            const targetDir = path.join(config.localDirectory, '/history', data.dirname);
+            if (fs.existsSync(targetDir)) {
+                fs.rm(
+                    targetDir,
+                    {
+                        recursive: true,
+                        force: true,
+                    },
+                    (err) => {
+                        if (err) {
+                            resolve(err)
+                        } else {
+                            resolve(true)
+                        }
+                    }
+                )
+            }
+        })
+    }
+
+    walk(dir) {
+        return new Promise((resolve, reject) => {
+            fs.readdir(dir, (error, files) => {
+                if (error) {
+                    return reject(error);
+                }
+                Promise.all(files.map((file) => {
+                    return new Promise((resolve, reject) => {
+                        const filepath = path.join(dir, file);
+                        fs.stat(filepath, (error, stats) => {
+                            if (error) {
+                                return reject(error);
+                            }
+                            if (stats.isDirectory()) {
+                                this.walk(filepath).then(resolve);
+                            } else if (stats.isFile()) {
+                                resolve(filepath);
+                            }
+                        });
+                    });
+                }))
+                    .then((foldersContents) => {
+                        resolve(foldersContents.reduce((all: any, folderContents) => all.concat(folderContents), []));
+                    });
+            });
+        });
+    }
+
+
+    async getAllFilesRecursively(folder: string, options?: {
+        sort?: string // byTimeCreated | byTimeModified | name
+    }) {
+        let allFiles = [];
+        const list = await this.walk(folder);
+
+        for (let f of (list as any)) {
+            const stat = fs.statSync(f);
+            if (stat.isFile()) {
+                allFiles.push({
+                    mtime: new Date(stat.mtime).getTime(),
+                    ctime: new Date(stat.ctime).getTime(),
+                    path: f,
+                    stat: stat
+                })
+            }
+        }
+
+        if (!options) {
+            return allFiles;
+        } else {
+            if (options.sort === 'byTimeModified') {
+                return allFiles.sort((a, b) => (a.mtime > b.mtime) ? -1 : ((b.mtime < a.mtime) ? 1 : 0));
+            } else {
+                return allFiles.sort((a, b) => (a.path > b.path) ? -1 : ((b.path < a.path) ? 1 : 0));
+            }
+        }
+
+    }
 }

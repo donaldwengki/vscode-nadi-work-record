@@ -1,9 +1,6 @@
 <script lang="ts">
-  import { rejects } from "assert";
-
-  import { resolve } from "path";
-
   import { onMount } from "svelte";
+  import { confirmPop, processIndicator } from "./setting.js";
 
   let projectFileHistory: any = workFilesHistory;
   let historyCollections: any = {};
@@ -48,44 +45,6 @@
       }
     });
   });
-
-  const confirmPop = (text, callback) => {
-    const modal = document.createElement("div");
-    modal.setAttribute("id", "modalBox");
-    modal.addEventListener("click", () => {
-      modal.remove();
-    })
-
-    const bx = document.createElement("div");
-    bx.setAttribute("id", "box");
-    bx.innerHTML = text;
-
-    const toolBox = document.createElement("div");
-    toolBox.setAttribute("id", "box-tools");
-
-    const buttonOK = document.createElement("button");
-    buttonOK.className = "ok";
-    buttonOK.innerHTML = "OK";
-    buttonOK.setAttribute('type', 'button');
-    buttonOK.addEventListener('click', () => {
-      modal.remove();
-      callback();
-    });
-    const buttonCancel = document.createElement("button");
-    buttonCancel.className = "cancel";
-    buttonCancel.innerHTML = "Cancel";
-    buttonCancel.setAttribute('type', 'button');
-    buttonCancel.addEventListener('click',() => {
-      modal.remove();
-    })
-
-    toolBox.appendChild(buttonOK);
-    toolBox.appendChild(buttonCancel);
-    bx.appendChild(toolBox);
-
-    modal.appendChild(bx);
-    document.body.appendChild(modal);
-  };
 </script>
 
 <h2>Working File History</h2>
@@ -127,6 +86,7 @@
               class="button del"
               on:click={() => {
                 confirmPop(`Delete "${item.rpath}" from working history?`, () => {
+                  processIndicator();
                   nadivscode.postMessage({
                     type: "deleteHistoryFile",
                     value: Object.assign(item, {

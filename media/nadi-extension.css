@@ -137,6 +137,8 @@ ul.sidebar-history-list ul.sidebar-history-item-list>li {
 ul.sidebar-history-list ul.sidebar-history-item-list>li>div {
     padding: 2px 8px;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
 
 ul.sidebar-history-list ul.sidebar-history-item-list>li:not(:last-child)>div {

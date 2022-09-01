@@ -1,2 +1,12 @@
 **/*.ts
 **/tsconfig.json
+.github/**/*
+.vscode/**/*
+src/**/*
+coverage/**/*
+package-lock.json
+.gitignore
+node_modules/**/*
+tsconfig.json
+webpack.config.js
+.nadi

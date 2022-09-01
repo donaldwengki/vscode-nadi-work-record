@@ -88,7 +88,6 @@ export class MakeFile {
         }
     }
 
-
     findDir(filePath: any | string) {
         if (!filePath) {
             return null;
