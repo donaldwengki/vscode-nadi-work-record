@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { config } from '../lib/global/config';
 import DiffPresenter from '../lib/diff-presenter';
+import { md5 } from '../lib/utility/md5';
 
 export class WorkingHistoryFiles {
     private diffPresenter = new DiffPresenter();
@@ -159,17 +160,52 @@ export class WorkingHistoryFiles {
             if (!data) {
                 reject('Invalid data to process');
             }
-            const targetFile = path.join(config.localDirectory, '/history', data.dirname, data.index + '.json');
+            const targetDir = path.join(config.localDirectory, 'history', data.dirname);
+            const targetFile = path.join(targetDir, data.index + '.json');
             if (fs.existsSync(targetFile)) {
-                fs.unlink(targetFile, (err) => {
-                    if (err) {
-                        reject('Error deleting history data.')
-                    } else {
-                        resolve(true);
+                fs.readFile(targetFile, {
+                    encoding: 'utf-8'
+                }, (err, fileData) => {
+                    let trgPath = JSON.parse(fileData).rpath;
+                    let md5path = md5(path.join(config.workingDirectory,trgPath));
+                    let fileInLastDir = path.join(targetDir, 'last', md5path);
+                    fs.unlink(targetFile, (err) => {
+                        if (err) {
+                            reject('Error deleting history data.');
+                        } else {
+                            if(fs.existsSync(fileInLastDir)) {
+                                fs.unlinkSync(fileInLastDir);
+                            }
+                            resolve(true);
+                        }
+                    })
+                })
+            }
+        })
+    }
+
+    async deleteBulkHistoryFile(data: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            if (!data) {
+                reject('Invalid data to process');
+            }
+            Promise.all(data.list.map(item => {
+                return new Promise((resolve, reject) => {
+                    const targetFile = path.join(config.localDirectory, '/history', data.dirname, item.index + '.json');
+                    if (fs.existsSync(targetFile)) {
+                        fs.unlink(targetFile, (err) => {
+                            if (err) {
+                                reject('Error deleting history data.')
+                            } else {
+                                resolve(true);
+                            }
+                        })
                     }
                 })
-                // resolve(true);
-            }
+            }))
+                .then(() => {
+                    resolve('Finnish');
+                })
         })
     }
 

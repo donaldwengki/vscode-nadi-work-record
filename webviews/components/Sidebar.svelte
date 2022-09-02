@@ -15,9 +15,18 @@
             historyList[message.value.key].list = message.value.list;
           }
           break;
+        case "stopProcessIndicator":
+          if(typeof processInd === 'object'){
+            try {
+              processInd.remove();
+            } catch (err){}
+          }
+          break;
         case "removeDateHistoryOfMonth":
           if(typeof processInd === 'object'){
-            processInd.remove();
+            try {
+              processInd.remove();
+            } catch (err){}
           }
           const dt = new Date(parseInt(message.value.dirname));
           const histKey = `${dt.getFullYear()}${(dt.getMonth() + 1)
@@ -53,6 +62,7 @@
   <ul class="sidebar-history-list">
     {#each Object.entries(historyList) as [key, value]}
       {#if value.text != undefined || !isNaN(value.count)}
+        <!-- svelte-ignore missing-declaration -->
         <li
           on:click={() => {
             nadivscode.postMessage({
@@ -72,6 +82,7 @@
                     <div
                       on:click={(e) => {
                         e.preventDefault();
+                        processInd = processIndicator();
                         nadivscode.postMessage({
                           type: "onOpenWorkingFilesHistory",
                           value: item.dirname,
@@ -115,4 +126,4 @@
     {/each}
   </ul>
 </div>
-<Child bind:value={$setting} />
+<Child />

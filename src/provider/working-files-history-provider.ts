@@ -92,6 +92,7 @@ export class WorkingFilesHistoryTab {
 
   private onReceiveMessage(sidebar: any, targetFolder: any) {
     const nTargetFolder = targetFolder;
+    const $this = this;
     return (async (dataMessage) => {
       switch (dataMessage.type) {
         case "alert":
@@ -112,7 +113,6 @@ export class WorkingFilesHistoryTab {
           this.workingHistoryFiles.takeHistoryDiff(dataMessage.value);
           break;
         case "deleteHistoryFile":
-          const $this = this;
           this.workingHistoryFiles.deleteHistoryFile(dataMessage.value)
             .then(res => {
               if (res) {
@@ -124,6 +124,25 @@ export class WorkingFilesHistoryTab {
             .catch(err => {
               console.log(err)
             })
+          break;
+        case "deleteBulkHistoryFile":
+          this.workingHistoryFiles.deleteBulkHistoryFile(dataMessage.value)
+            .then(res => {
+              if (res) {
+                $this._update(nTargetFolder).then(() => {
+                  $this._sidebar._update();
+                });
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          break;
+        case "sidebarStopProcessIndicator":
+          this._sidebar._view.webview.postMessage({
+            type: "stopProcessIndicator",
+            value: null
+          });
           break;
       }
     })

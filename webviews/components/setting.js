@@ -21,20 +21,23 @@ export const confirmPop = (text, callback) => {
   buttonOK.setAttribute('type', 'button');
   buttonOK.addEventListener('click', () => {
     modal.remove();
-    callback();
+    if (callback !== undefined)
+      callback();
   });
-  const buttonCancel = document.createElement("button");
-  buttonCancel.className = "cancel";
-  buttonCancel.innerHTML = "Cancel";
-  buttonCancel.setAttribute('type', 'button');
-  buttonCancel.addEventListener('click',() => {
-    modal.remove();
-  })
-
   toolBox.appendChild(buttonOK);
-  toolBox.appendChild(buttonCancel);
-  bx.appendChild(toolBox);
 
+  if (callback !== undefined) {
+    const buttonCancel = document.createElement("button");
+    buttonCancel.className = "cancel";
+    buttonCancel.innerHTML = "Cancel";
+    buttonCancel.setAttribute('type', 'button');
+    buttonCancel.addEventListener('click', () => {
+      modal.remove();
+    })
+    toolBox.appendChild(buttonCancel);
+  }
+
+  bx.appendChild(toolBox);
   modal.appendChild(bx);
   document.body.appendChild(modal);
 };

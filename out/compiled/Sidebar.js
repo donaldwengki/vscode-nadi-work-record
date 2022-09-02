@@ -20,16 +20,6 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
-    function subscribe(store, ...callbacks) {
-        if (store == null) {
-            return noop;
-        }
-        const unsub = store.subscribe(...callbacks);
-        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
-    }
-    function component_subscribe(component, store, callback) {
-        component.$$.on_destroy.push(subscribe(store, callback));
-    }
     function append(target, node) {
         target.appendChild(node);
     }
@@ -103,9 +93,6 @@ var app = (function () {
     }
     function add_render_callback(fn) {
         render_callbacks.push(fn);
-    }
-    function add_flush_callback(fn) {
-        flush_callbacks.push(fn);
     }
     // flush() calls callbacks in this order:
     // 1. All beforeUpdate callbacks, in order: parents before children
@@ -198,14 +185,6 @@ var app = (function () {
         }
         else if (callback) {
             callback();
-        }
-    }
-
-    function bind(component, name, callback) {
-        const index = component.$$.props[name];
-        if (index !== undefined) {
-            component.$$.bound[index] = callback;
-            callback(component.$$.ctx[index]);
         }
     }
     function create_component(block) {
@@ -630,55 +609,6 @@ var app = (function () {
     	}
     }
 
-    const subscriber_queue = [];
-    /**
-     * Create a `Writable` store that allows both updating and reading by subscription.
-     * @param {*=}value initial value
-     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
-     */
-    function writable(value, start = noop) {
-        let stop;
-        const subscribers = new Set();
-        function set(new_value) {
-            if (safe_not_equal(value, new_value)) {
-                value = new_value;
-                if (stop) { // store is ready
-                    const run_queue = !subscriber_queue.length;
-                    for (const subscriber of subscribers) {
-                        subscriber[1]();
-                        subscriber_queue.push(subscriber, value);
-                    }
-                    if (run_queue) {
-                        for (let i = 0; i < subscriber_queue.length; i += 2) {
-                            subscriber_queue[i][0](subscriber_queue[i + 1]);
-                        }
-                        subscriber_queue.length = 0;
-                    }
-                }
-            }
-        }
-        function update(fn) {
-            set(fn(value));
-        }
-        function subscribe(run, invalidate = noop) {
-            const subscriber = [run, invalidate];
-            subscribers.add(subscriber);
-            if (subscribers.size === 1) {
-                stop = start(set) || noop;
-            }
-            run(value);
-            return () => {
-                subscribers.delete(subscriber);
-                if (subscribers.size === 0) {
-                    stop();
-                    stop = null;
-                }
-            };
-        }
-        return { set, update, subscribe };
-    }
-
-    const setting = writable('Initial');
     const confirmPop = (text, callback) => {
       const modal = document.createElement("div");
       modal.setAttribute("id", "modalBox");
@@ -699,20 +629,23 @@ var app = (function () {
       buttonOK.setAttribute('type', 'button');
       buttonOK.addEventListener('click', () => {
         modal.remove();
-        callback();
+        if (callback !== undefined)
+          callback();
       });
-      const buttonCancel = document.createElement("button");
-      buttonCancel.className = "cancel";
-      buttonCancel.innerHTML = "Cancel";
-      buttonCancel.setAttribute('type', 'button');
-      buttonCancel.addEventListener('click',() => {
-        modal.remove();
-      });
-
       toolBox.appendChild(buttonOK);
-      toolBox.appendChild(buttonCancel);
-      bx.appendChild(toolBox);
 
+      if (callback !== undefined) {
+        const buttonCancel = document.createElement("button");
+        buttonCancel.className = "cancel";
+        buttonCancel.innerHTML = "Cancel";
+        buttonCancel.setAttribute('type', 'button');
+        buttonCancel.addEventListener('click', () => {
+          modal.remove();
+        });
+        toolBox.appendChild(buttonCancel);
+      }
+
+      bx.appendChild(toolBox);
       modal.appendChild(bx);
       document.body.appendChild(modal);
     };
@@ -738,36 +671,36 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[7] = list[i][0];
-    	child_ctx[8] = list[i][1];
+    	child_ctx[5] = list[i][0];
+    	child_ctx[6] = list[i][1];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
+    	child_ctx[9] = list[i];
     	return child_ctx;
     }
 
-    // (51:6) {#if value.text != undefined || !isNaN(value.count)}
+    // (62:6) {#if value.text != undefined || !isNaN(value.count)}
     function create_if_block(ctx) {
     	let li;
     	let div;
-    	let t0_value = /*value*/ ctx[8].text + "";
+    	let t0_value = /*value*/ ctx[6].text + "";
     	let t0;
     	let t1;
     	let span;
-    	let t2_value = /*value*/ ctx[8].count + "";
+    	let t2_value = /*value*/ ctx[6].count + "";
     	let t2;
     	let t3;
-    	let show_if = /*value*/ ctx[8] && /*value*/ ctx[8].hasOwnProperty("list");
+    	let show_if = /*value*/ ctx[6] && /*value*/ ctx[6].hasOwnProperty("list");
     	let t4;
     	let mounted;
     	let dispose;
     	let if_block = show_if && create_if_block_1(ctx);
 
     	function click_handler_2() {
-    		return /*click_handler_2*/ ctx[5](/*key*/ ctx[7]);
+    		return /*click_handler_2*/ ctx[4](/*key*/ ctx[5]);
     	}
 
     	return {
@@ -802,9 +735,9 @@ var app = (function () {
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*value*/ ctx[8].text + "")) set_data(t0, t0_value);
-    			if (dirty & /*historyList*/ 1 && t2_value !== (t2_value = /*value*/ ctx[8].count + "")) set_data(t2, t2_value);
-    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[8] && /*value*/ ctx[8].hasOwnProperty("list");
+    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*value*/ ctx[6].text + "")) set_data(t0, t0_value);
+    			if (dirty & /*historyList*/ 1 && t2_value !== (t2_value = /*value*/ ctx[6].count + "")) set_data(t2, t2_value);
+    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[6] && /*value*/ ctx[6].hasOwnProperty("list");
 
     			if (show_if) {
     				if (if_block) {
@@ -828,10 +761,10 @@ var app = (function () {
     	};
     }
 
-    // (63:10) {#if value && value.hasOwnProperty("list")}
+    // (75:10) {#if value && value.hasOwnProperty("list")}
     function create_if_block_1(ctx) {
     	let ul;
-    	let each_value_1 = /*value*/ ctx[8].list;
+    	let each_value_1 = /*value*/ ctx[6].list;
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -856,8 +789,8 @@ var app = (function () {
     			}
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*confirmPop, Object, historyList, processInd, processIndicator, console, nadivscode, parseInt*/ 3) {
-    				each_value_1 = /*value*/ ctx[8].list;
+    			if (dirty & /*confirmPop, Object, historyList, processInd, processIndicator, nadivscode, parseInt*/ 3) {
+    				each_value_1 = /*value*/ ctx[6].list;
     				let i;
 
     				for (i = 0; i < each_value_1.length; i += 1) {
@@ -886,7 +819,7 @@ var app = (function () {
     	};
     }
 
-    // (80:22) {:else}
+    // (93:22) {:else}
     function create_else_block(ctx) {
     	let small;
 
@@ -906,10 +839,10 @@ var app = (function () {
     	};
     }
 
-    // (78:22) {#if parseInt(item.count) > 0}
+    // (91:22) {#if parseInt(item.count) > 0}
     function create_if_block_2(ctx) {
     	let span;
-    	let t_value = /*item*/ ctx[11].count + "";
+    	let t_value = /*item*/ ctx[9].count + "";
     	let t;
 
     	return {
@@ -923,7 +856,7 @@ var app = (function () {
     			append(span, t);
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*historyList*/ 1 && t_value !== (t_value = /*item*/ ctx[11].count + "")) set_data(t, t_value);
+    			if (dirty & /*historyList*/ 1 && t_value !== (t_value = /*item*/ ctx[9].count + "")) set_data(t, t_value);
     		},
     		d(detaching) {
     			if (detaching) detach(span);
@@ -931,12 +864,12 @@ var app = (function () {
     	};
     }
 
-    // (65:14) {#each value.list as item}
+    // (77:14) {#each value.list as item}
     function create_each_block_1(ctx) {
     	let li;
     	let div1;
     	let div0;
-    	let t0_value = /*item*/ ctx[11].text + "";
+    	let t0_value = /*item*/ ctx[9].text + "";
     	let t0;
     	let t1;
     	let show_if;
@@ -949,7 +882,7 @@ var app = (function () {
 
     	function select_block_type(ctx, dirty) {
     		if (dirty & /*historyList*/ 1) show_if = null;
-    		if (show_if == null) show_if = !!(parseInt(/*item*/ ctx[11].count) > 0);
+    		if (show_if == null) show_if = !!(parseInt(/*item*/ ctx[9].count) > 0);
     		if (show_if) return create_if_block_2;
     		return create_else_block;
     	}
@@ -958,11 +891,11 @@ var app = (function () {
     	let if_block = current_block_type(ctx);
 
     	function click_handler(...args) {
-    		return /*click_handler*/ ctx[3](/*item*/ ctx[11], ...args);
+    		return /*click_handler*/ ctx[2](/*item*/ ctx[9], ...args);
     	}
 
     	function click_handler_1() {
-    		return /*click_handler_1*/ ctx[4](/*item*/ ctx[11]);
+    		return /*click_handler_1*/ ctx[3](/*item*/ ctx[9]);
     	}
 
     	return {
@@ -1004,7 +937,7 @@ var app = (function () {
     		},
     		p(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*item*/ ctx[11].text + "")) set_data(t0, t0_value);
+    			if (dirty & /*historyList*/ 1 && t0_value !== (t0_value = /*item*/ ctx[9].text + "")) set_data(t0, t0_value);
 
     			if (current_block_type === (current_block_type = select_block_type(ctx, dirty)) && if_block) {
     				if_block.p(ctx, dirty);
@@ -1027,9 +960,9 @@ var app = (function () {
     	};
     }
 
-    // (50:4) {#each Object.entries(historyList) as [key, value]}
+    // (61:4) {#each Object.entries(historyList) as [key, value]}
     function create_each_block(ctx) {
-    	let show_if = /*value*/ ctx[8].text != undefined || !isNaN(/*value*/ ctx[8].count);
+    	let show_if = /*value*/ ctx[6].text != undefined || !isNaN(/*value*/ ctx[6].count);
     	let if_block_anchor;
     	let if_block = show_if && create_if_block(ctx);
 
@@ -1043,7 +976,7 @@ var app = (function () {
     			insert(target, if_block_anchor, anchor);
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[8].text != undefined || !isNaN(/*value*/ ctx[8].count);
+    			if (dirty & /*historyList*/ 1) show_if = /*value*/ ctx[6].text != undefined || !isNaN(/*value*/ ctx[6].count);
 
     			if (show_if) {
     				if (if_block) {
@@ -1072,7 +1005,6 @@ var app = (function () {
     	let ul;
     	let t2;
     	let child;
-    	let updating_value;
     	let current;
     	let each_value = Object.entries(/*historyList*/ ctx[0]);
     	let each_blocks = [];
@@ -1081,18 +1013,7 @@ var app = (function () {
     		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
     	}
 
-    	function child_value_binding(value) {
-    		/*child_value_binding*/ ctx[6](value);
-    	}
-
-    	let child_props = {};
-
-    	if (/*$setting*/ ctx[2] !== void 0) {
-    		child_props.value = /*$setting*/ ctx[2];
-    	}
-
-    	child = new Setting({ props: child_props });
-    	binding_callbacks.push(() => bind(child, 'value', child_value_binding));
+    	child = new Setting({});
 
     	return {
     		c() {
@@ -1126,7 +1047,7 @@ var app = (function () {
     			current = true;
     		},
     		p(ctx, [dirty]) {
-    			if (dirty & /*nadivscode, Object, historyList, confirmPop, processInd, processIndicator, console, parseInt, undefined, isNaN*/ 3) {
+    			if (dirty & /*nadivscode, Object, historyList, confirmPop, processInd, processIndicator, parseInt, undefined, isNaN*/ 3) {
     				each_value = Object.entries(/*historyList*/ ctx[0]);
     				let i;
 
@@ -1148,16 +1069,6 @@ var app = (function () {
 
     				each_blocks.length = each_value.length;
     			}
-
-    			const child_changes = {};
-
-    			if (!updating_value && dirty & /*$setting*/ 4) {
-    				updating_value = true;
-    				child_changes.value = /*$setting*/ ctx[2];
-    				add_flush_callback(() => updating_value = false);
-    			}
-
-    			child.$set(child_changes);
     		},
     		i(local) {
     			if (current) return;
@@ -1180,8 +1091,6 @@ var app = (function () {
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	let $setting;
-    	component_subscribe($$self, setting, $$value => $$invalidate(2, $setting = $$value));
     	let historyList = initHistoryList;
     	let processInd = null;
 
@@ -1195,9 +1104,22 @@ var app = (function () {
     						$$invalidate(0, historyList[message.value.key].list = message.value.list, historyList);
     					}
     					break;
+    				case "stopProcessIndicator":
+    					if (typeof processInd === 'object') {
+    						try {
+    							processInd.remove();
+    						} catch(err) {
+    							
+    						}
+    					}
+    					break;
     				case "removeDateHistoryOfMonth":
     					if (typeof processInd === 'object') {
-    						processInd.remove();
+    						try {
+    							processInd.remove();
+    						} catch(err) {
+    							
+    						}
     					}
     					const dt = new Date(parseInt(message.value.dirname));
     					const histKey = `${dt.getFullYear()}${(dt.getMonth() + 1).toString().padStart(2, "0")}`;
@@ -1215,6 +1137,7 @@ var app = (function () {
 
     	const click_handler = (item, e) => {
     		e.preventDefault();
+    		$$invalidate(1, processInd = processIndicator());
 
     		nadivscode.postMessage({
     			type: "onOpenWorkingFilesHistory",
@@ -1225,7 +1148,6 @@ var app = (function () {
     	const click_handler_1 = item => {
     		confirmPop(`Delete all history of ${item.text}?`, () => {
     			$$invalidate(1, processInd = processIndicator());
-    			console.log(processInd);
     			nadivscode.postMessage({ type: "delHistoryFolder", value: item });
     		});
     	};
@@ -1234,20 +1156,7 @@ var app = (function () {
     		nadivscode.postMessage({ type: "getHistoryOfMonth", value: key });
     	};
 
-    	function child_value_binding(value) {
-    		$setting = value;
-    		setting.set($setting);
-    	}
-
-    	return [
-    		historyList,
-    		processInd,
-    		$setting,
-    		click_handler,
-    		click_handler_1,
-    		click_handler_2,
-    		child_value_binding
-    	];
+    	return [historyList, processInd, click_handler, click_handler_1, click_handler_2];
     }
 
     class Sidebar extends SvelteComponent {

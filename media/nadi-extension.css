@@ -41,6 +41,17 @@ ul.history-list-collection>li {
     text-decoration: none;
     border-bottom: 1px solid rgba(125, 125, 125, .3);
     padding-bottom: 3px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+ul.history-list-collection>li .list-item {
+    width: 100%;
+    margin-left: 8px;
+}
+
+ul.history-list-collection>li .list-item input[type="checkbox"] {
+    margin-right: 8px;
 }
 
 ul.history-list-collection>li:last-child {
@@ -326,7 +337,7 @@ input:checked+.slider:before {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255,255,255,.2);
+    background-color: rgba(255, 255, 255, .2);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -340,16 +351,18 @@ input:checked+.slider:before {
     max-width: calc(100vw - 100px);
     background: var(--vscode-editor-background);
     padding: var(--container-paddding);
-    border: 1px solid rgba(125,125,125,.1);
+    border: 1px solid rgba(125, 125, 125, .1);
     border-radius: 3px;
     padding-bottom: var(--container-paddding-half);
 }
+
 #modalBox div#box-tools {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     margin-top: var(--container-paddding);
 }
+
 #modalBox div#box-tools button {
     width: fit-content;
     outline: none;
@@ -359,6 +372,45 @@ input:checked+.slider:before {
     padding-top: 4px;
     padding-bottom: 4px;
 }
+
 #modalBox div#box-tools button.cancel {
     background-color: var(--vscode-button-secondaryBackground);
+}
+
+
+/* WFH Tools */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.panel .wf-title {
+    display: inline-block;
+}
+
+.panel button {
+    width: fit-content;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 6px;
+}
+
+.search-box {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    width: 100%;
+    border-top: 1px solid rgba(125,125,125, .3);
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.search-box .icon {
+    padding:3px 6px;
+}
+
+.search-box> input[type="text"] {
+    max-width: 240px;
 }

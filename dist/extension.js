@@ -952,6 +952,7 @@ class WorkingFilesHistoryTab {
     }
     onReceiveMessage(sidebar, targetFolder) {
         const nTargetFolder = targetFolder;
+        const $this = this;
         return ((dataMessage) => __awaiter(this, void 0, void 0, function* () {
             switch (dataMessage.type) {
                 case "alert":
@@ -972,7 +973,6 @@ class WorkingFilesHistoryTab {
                     this.workingHistoryFiles.takeHistoryDiff(dataMessage.value);
                     break;
                 case "deleteHistoryFile":
-                    const $this = this;
                     this.workingHistoryFiles.deleteHistoryFile(dataMessage.value)
                         .then(res => {
                         if (res) {
@@ -983,6 +983,25 @@ class WorkingFilesHistoryTab {
                     })
                         .catch(err => {
                         console.log(err);
+                    });
+                    break;
+                case "deleteBulkHistoryFile":
+                    this.workingHistoryFiles.deleteBulkHistoryFile(dataMessage.value)
+                        .then(res => {
+                        if (res) {
+                            $this._update(nTargetFolder).then(() => {
+                                $this._sidebar._update();
+                            });
+                        }
+                    })
+                        .catch(err => {
+                        console.log(err);
+                    });
+                    break;
+                case "sidebarStopProcessIndicator":
+                    this._sidebar._view.webview.postMessage({
+                        type: "stopProcessIndicator",
+                        value: null
                     });
                     break;
             }
@@ -1065,6 +1084,7 @@ const fs = __webpack_require__(5);
 const path = __webpack_require__(6);
 const config_1 = __webpack_require__(7);
 const diff_presenter_1 = __webpack_require__(18);
+const md5_1 = __webpack_require__(8);
 class WorkingHistoryFiles {
     constructor() {
         this.diffPresenter = new diff_presenter_1.default();
@@ -1215,18 +1235,55 @@ class WorkingHistoryFiles {
                 if (!data) {
                     reject('Invalid data to process');
                 }
-                const targetFile = path.join(config_1.config.localDirectory, '/history', data.dirname, data.index + '.json');
+                const targetDir = path.join(config_1.config.localDirectory, 'history', data.dirname);
+                const targetFile = path.join(targetDir, data.index + '.json');
                 if (fs.existsSync(targetFile)) {
-                    fs.unlink(targetFile, (err) => {
-                        if (err) {
-                            reject('Error deleting history data.');
-                        }
-                        else {
-                            resolve(true);
+                    fs.readFile(targetFile, {
+                        encoding: 'utf-8'
+                    }, (err, fileData) => {
+                        let trgPath = JSON.parse(fileData).rpath;
+                        let md5path = (0, md5_1.md5)(path.join(config_1.config.workingDirectory, trgPath));
+                        let fileInLastDir = path.join(targetDir, 'last', md5path);
+                        fs.unlink(targetFile, (err) => {
+                            if (err) {
+                                reject('Error deleting history data.');
+                            }
+                            else {
+                                if (fs.existsSync(fileInLastDir)) {
+                                    fs.unlinkSync(fileInLastDir);
+                                }
+                                resolve(true);
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    }
+    deleteBulkHistoryFile(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                if (!data) {
+                    reject('Invalid data to process');
+                }
+                Promise.all(data.list.map(item => {
+                    return new Promise((resolve, reject) => {
+                        const targetFile = path.join(config_1.config.localDirectory, '/history', data.dirname, item.index + '.json');
+                        if (fs.existsSync(targetFile)) {
+                            fs.unlink(targetFile, (err) => {
+                                if (err) {
+                                    reject('Error deleting history data.');
+                                }
+                                else {
+                                    resolve(true);
+                                }
+                            });
                         }
                     });
-                    // resolve(true);
-                }
+                }))
+                    .then(() => {
+                    resolve('Finnish');
+                });
             });
         });
     }
