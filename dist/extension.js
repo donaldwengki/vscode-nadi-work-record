@@ -1006,6 +1006,22 @@ class WorkingFilesHistoryTab {
                 case "updateWindow":
                     this._update(dataMessage.value);
                     break;
+                case "openFileEditor":
+                    const fileToOpen = path.join(config_1.config.workingDirectory, dataMessage.value.rpath);
+                    const setting = this._vscode.Uri.parse(fileToOpen);
+                    this._vscode.workspace.openTextDocument(setting)
+                        .then((a) => {
+                        this._vscode.window.showTextDocument(a, this._vscode.ViewColumn.Active, false);
+                        // .then(e => {
+                        //   e.edit(edit =>  {
+                        //     // jika ingin menambahkan text pada editor file yang dibuka
+                        //     edit.insert(new this._vscode.Position(0, 0), "Test insert here");
+                        //   })
+                        // })
+                    }, (error) => {
+                        console.log('openFileEditor', error);
+                    });
+                    break;
             }
         }));
     }

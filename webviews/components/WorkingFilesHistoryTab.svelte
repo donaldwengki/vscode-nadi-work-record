@@ -193,6 +193,19 @@
               <!-- ( {item.index} ) -->
               <span class="tools">
                 <span
+                  class="button open-file"
+                  on:click={() => {
+                    nadivscode.postMessage({
+                      type: "openFileEditor",
+                      value: Object.assign(item, {
+                        dirname: targetFolderData.key,
+                      }),
+                    });
+                  }}
+                >
+                  <i class="icon-file-text" />
+                </span>
+                <span
                   class="button open"
                   on:click={() => {
                     nadivscode.postMessage({

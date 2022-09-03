@@ -84,7 +84,7 @@ ul.history-list-collection>li .list-item-text .tools {
 }
 
 ul.history-list-collection>li .list-item-text .button {
-    margin-left: 2px;
+    margin-left: 4px;
     opacity: .4;
 }
 
@@ -98,6 +98,10 @@ ul.history-list-collection>li .list-item-text .button.del {
 
 ul.history-list-collection>li .list-item-text .button.open {
     color: var(--vscode-button-background);
+}
+
+ul.history-list-collection>li .list-item-text .button.open-file {
+    color: rgb(76, 241, 114);
 }
 
 .badge {
