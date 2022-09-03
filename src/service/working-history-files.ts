@@ -133,22 +133,11 @@ export class WorkingHistoryFiles {
     }
 
     async takeHistoryDiff(historyItem: any) {
-        // console.log(historyItem);
         const historyDir = path.join(config.localDirectory, '/history');
         const dataParentDir = path.join(historyDir, historyItem.dirname);
 
         const originFx = path.join(dataParentDir, '/origin', historyItem.index);
         const lastFx = path.join(dataParentDir, '/last', historyItem.index);
-
-        // if(!fs.existsSync(originFx)){
-        //     vscode.window.showErrorMessage(`The origin file of ${historyItem.rpath} of ${this.convertTimeToDate(historyItem.dirname)},  is unvailable!`);
-        //     return;
-        // }
-
-        // if(!fs.existsSync(lastFx)){
-        //     vscode.window.showErrorMessage(`The last changed file  file of ${historyItem.rpath} of ${this.convertTimeToDate(historyItem.dirname)} is unvailable!`);
-        //     return;
-        // }
 
         let date = this.convertTimeToDate(historyItem.dirname, 'short');
 

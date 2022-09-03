@@ -813,7 +813,7 @@ class SidebarProvider {
             const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "out", "compiled/Sidebar.js"));
             const stylesPathNadiCss = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "nadi-extension.css"));
             const fontaw = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, "media", "font-awesome.css"));
-            const nonce = (0, getIdentifierStr_1.getNonce)();
+            const nonce = (0, getIdentifierStr_1.getIdentificator)();
             const initHistoryList = yield this._historyWorkData().getHistoryByMonth();
             let settings = {
                 historyIgnore: this._settings.getHistoryIgnoreList(true),
@@ -824,27 +824,27 @@ class SidebarProvider {
             }
             return `<!DOCTYPE html>
 			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<!--
-					Use a content security policy to only allow loading images from https or from our extension directory,
-					and only allow scripts that have a specific nonce.
-                -->
-                <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link href="${fontaw}" rel="stylesheet">
-                <link href="${styleResetUri}" rel="stylesheet">
-                <link href="${styleVSCodeUri}" rel="stylesheet">
-                <link href="${stylesPathNadiCss}" rel="stylesheet">
-                <script nonce="${nonce}">
-                    const nadivscode = acquireVsCodeApi();
-                    const initHistoryList = ${JSON.stringify(initHistoryList)}
-                    const settings = ${JSON.stringify(settings)}
-                </script>
-            </head>
-            <body>
-				<script nonce="${nonce}" src="${scriptUri}"></script>
-			</body>
+        <head>
+          <meta charset="UTF-8">
+          <!--
+            Use a content security policy to only allow loading images from https or from our extension directory,
+            and only allow scripts that have a specific nonce.
+          -->
+          <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="${fontaw}" rel="stylesheet">
+          <link href="${styleResetUri}" rel="stylesheet">
+          <link href="${styleVSCodeUri}" rel="stylesheet">
+          <link href="${stylesPathNadiCss}" rel="stylesheet">
+          <script nonce="${nonce}">
+            const nadivscode = acquireVsCodeApi();
+            const initHistoryList = ${JSON.stringify(initHistoryList)}
+            const settings = ${JSON.stringify(settings)}
+          </script>
+        </head>
+        <body>
+          <script nonce="${nonce}" src="${scriptUri}"></script>
+        </body>
 			</html>`;
         });
     }
@@ -859,8 +859,8 @@ exports.SidebarProvider = SidebarProvider;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getNonce = void 0;
-function getNonce() {
+exports.getIdentificator = void 0;
+function getIdentificator() {
     let text = "";
     const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for (let i = 0; i < 32; i++) {
@@ -868,7 +868,7 @@ function getNonce() {
     }
     return text;
 }
-exports.getNonce = getNonce;
+exports.getIdentificator = getIdentificator;
 
 
 /***/ }),
@@ -911,9 +911,9 @@ class WorkingFilesHistoryTab {
         if (!this._windowTab) {
             this._sidebar = sidebar;
             const windowTab = this._vscode.window.createWebviewPanel(this.viewType, "Working History", column, {
-                // Enable javascript in the webview
+                // Enable javascript pada webview
                 enableScripts: true,
-                // And restrict the webview to only loading content from our extension's `media` directory.
+                // webview loading kontent dari extensi saja bersumber dari direktory media dan out/compiled
                 localResourceRoots: [
                     this._vscode.Uri.joinPath(sidebar._extensionUri, "media"),
                     this._vscode.Uri.joinPath(sidebar._extensionUri, "out/compiled"),
@@ -922,8 +922,7 @@ class WorkingFilesHistoryTab {
             windowTab.webview.html = this._getHtmlForWebview(windowTab.webview, sidebar, targetFolder);
             windowTab.webview.onDidReceiveMessage(this.onReceiveMessage(sidebar, targetFolder));
             this._windowTab = windowTab;
-            // Listen for when the panel is disposed
-            // This happens when the user closes the panel or when the panel is closed programatically
+            // Ini berjalan saat user menutup panel atau ketika panel ditutup programatically
             this._windowTab.onDidDispose(() => this._dispose(), null, this._disposables);
             this._currentWinTab = this;
         }
@@ -1036,31 +1035,31 @@ class WorkingFilesHistoryTab {
         const fontaw = webview.asWebviewUri(this._vscode.Uri.joinPath(mainApp._extensionUri, "media", "font-awesome.css"));
         const scriptMn = webview.asWebviewUri(this._vscode.Uri.joinPath(mainApp._extensionUri, "out/compiled", "WorkingFilesHistoryTab.js"));
         // Use a nonce to only allow specific scripts to be run
-        const nonce = (0, getIdentifierStr_1.getNonce)();
+        const nonce = (0, getIdentifierStr_1.getIdentificator)();
         return `<!DOCTYPE html>
 			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<!--
-					Use a content security policy to only allow loading images from https or from our extension directory,
-					and only allow scripts that have a specific nonce.
-        -->
-        <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="${fontaw}" rel="stylesheet">
-        <link href="${styleResetPath}" rel="stylesheet">
-        <link href="${stylesPathMainPath}" rel="stylesheet">
-        <link href="${stylesPathNadiCss}" rel="stylesheet">
-        <script nonce="${nonce}">
-            const nadivscode = acquireVsCodeApi();
-            const workFilesHistory = ${JSON.stringify(this._getHistoryList(targetFolder))};
-            const targetFolderData = ${JSON.stringify(this._getTargetFolderData(targetFolder))};
-        </script>
-			</head>
-      <body>
-      </body>
-      <script src="${scriptMn}" nonce="${nonce}"></script>
-	</html>`;
+        <head>
+          <meta charset="UTF-8">
+          <!--
+            Use a content security policy to only allow loading images from https or from our extension directory,
+            and only allow scripts that have a specific nonce.
+          -->
+          <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="${fontaw}" rel="stylesheet">
+          <link href="${styleResetPath}" rel="stylesheet">
+          <link href="${stylesPathMainPath}" rel="stylesheet">
+          <link href="${stylesPathNadiCss}" rel="stylesheet">
+          <script nonce="${nonce}">
+              const nadivscode = acquireVsCodeApi();
+              const workFilesHistory = ${JSON.stringify(this._getHistoryList(targetFolder))};
+              const targetFolderData = ${JSON.stringify(this._getTargetFolderData(targetFolder))};
+          </script>
+        </head>
+        <body>
+          <script src="${scriptMn}" nonce="${nonce}"></script>
+        </body>
+      </html>`;
     }
 }
 exports.WorkingFilesHistoryTab = WorkingFilesHistoryTab;
@@ -1215,19 +1214,10 @@ class WorkingHistoryFiles {
     }
     takeHistoryDiff(historyItem) {
         return __awaiter(this, void 0, void 0, function* () {
-            // console.log(historyItem);
             const historyDir = path.join(config_1.config.localDirectory, '/history');
             const dataParentDir = path.join(historyDir, historyItem.dirname);
             const originFx = path.join(dataParentDir, '/origin', historyItem.index);
             const lastFx = path.join(dataParentDir, '/last', historyItem.index);
-            // if(!fs.existsSync(originFx)){
-            //     vscode.window.showErrorMessage(`The origin file of ${historyItem.rpath} of ${this.convertTimeToDate(historyItem.dirname)},  is unvailable!`);
-            //     return;
-            // }
-            // if(!fs.existsSync(lastFx)){
-            //     vscode.window.showErrorMessage(`The last changed file  file of ${historyItem.rpath} of ${this.convertTimeToDate(historyItem.dirname)} is unvailable!`);
-            //     return;
-            // }
             let date = this.convertTimeToDate(historyItem.dirname, 'short');
             yield this.diffPresenter.takeDiff(originFx, lastFx, date, historyItem.rpath);
         });

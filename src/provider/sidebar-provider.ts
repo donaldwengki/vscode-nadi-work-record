@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { getNonce } from "../getIdentifierStr";
+import { getIdentificator } from "../lib/getIdentifierStr";
 import { WorkingFilesHistoryTab } from './working-files-history-provider';
 import { WorkingHistoryFiles } from "../service/working-history-files";
 import { Settings } from "../lib/settings";
@@ -164,7 +164,7 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
       vscode.Uri.joinPath(this._extensionUri, "media", "font-awesome.css")
     );
 
-    const nonce = getNonce();
+    const nonce = getIdentificator();
     const initHistoryList = await this._historyWorkData().getHistoryByMonth();
     let settings = {
       historyIgnore: this._settings.getHistoryIgnoreList(true),
@@ -177,28 +177,27 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     return `<!DOCTYPE html>
 			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<!--
-					Use a content security policy to only allow loading images from https or from our extension directory,
-					and only allow scripts that have a specific nonce.
-                -->
-                <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource
-      }; script-src 'nonce-${nonce}';">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link href="${fontaw}" rel="stylesheet">
-                <link href="${styleResetUri}" rel="stylesheet">
-                <link href="${styleVSCodeUri}" rel="stylesheet">
-                <link href="${stylesPathNadiCss}" rel="stylesheet">
-                <script nonce="${nonce}">
-                    const nadivscode = acquireVsCodeApi();
-                    const initHistoryList = ${JSON.stringify(initHistoryList)}
-                    const settings = ${JSON.stringify(settings)}
-                </script>
-            </head>
-            <body>
-				<script nonce="${nonce}" src="${scriptUri}"></script>
-			</body>
+        <head>
+          <meta charset="UTF-8">
+          <!--
+            Use a content security policy to only allow loading images from https or from our extension directory,
+            and only allow scripts that have a specific nonce.
+          -->
+          <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="${fontaw}" rel="stylesheet">
+          <link href="${styleResetUri}" rel="stylesheet">
+          <link href="${styleVSCodeUri}" rel="stylesheet">
+          <link href="${stylesPathNadiCss}" rel="stylesheet">
+          <script nonce="${nonce}">
+            const nadivscode = acquireVsCodeApi();
+            const initHistoryList = ${JSON.stringify(initHistoryList)}
+            const settings = ${JSON.stringify(settings)}
+          </script>
+        </head>
+        <body>
+          <script nonce="${nonce}" src="${scriptUri}"></script>
+        </body>
 			</html>`;
   }
 } 

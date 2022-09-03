@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as vscode from "vscode";
-import { getNonce } from "../getIdentifierStr";
+import { getIdentificator } from "../lib/getIdentifierStr";
 import { config } from "../lib/global/config";
 import { WorkingHistoryFiles } from "../service/working-history-files";
 import { SidebarProvider } from './sidebar-provider';
@@ -42,10 +42,10 @@ export class WorkingFilesHistoryTab {
         "Working History",
         column,
         {
-          // Enable javascript in the webview
+          // Enable javascript pada webview
           enableScripts: true,
 
-          // And restrict the webview to only loading content from our extension's `media` directory.
+          // webview loading kontent dari extensi saja bersumber dari direktory media dan out/compiled
           localResourceRoots: [
             this._vscode.Uri.joinPath(sidebar._extensionUri, "media"),
             this._vscode.Uri.joinPath(sidebar._extensionUri, "out/compiled"),
@@ -57,8 +57,7 @@ export class WorkingFilesHistoryTab {
       windowTab.webview.onDidReceiveMessage(this.onReceiveMessage(sidebar, targetFolder));
       this._windowTab = windowTab;
 
-      // Listen for when the panel is disposed
-      // This happens when the user closes the panel or when the panel is closed programatically
+      // Ini berjalan saat user menutup panel atau ketika panel ditutup programatically
       this._windowTab.onDidDispose(() => this._dispose(), null, this._disposables);
 
       this._currentWinTab = this;
@@ -179,32 +178,31 @@ export class WorkingFilesHistoryTab {
     const scriptMn = webview.asWebviewUri(this._vscode.Uri.joinPath(mainApp._extensionUri, "out/compiled", "WorkingFilesHistoryTab.js"));
 
     // Use a nonce to only allow specific scripts to be run
-    const nonce = getNonce();
+    const nonce = getIdentificator();
 
     return `<!DOCTYPE html>
 			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<!--
-					Use a content security policy to only allow loading images from https or from our extension directory,
-					and only allow scripts that have a specific nonce.
-        -->
-        <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource
-      }; script-src 'nonce-${nonce}';">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="${fontaw}" rel="stylesheet">
-        <link href="${styleResetPath}" rel="stylesheet">
-        <link href="${stylesPathMainPath}" rel="stylesheet">
-        <link href="${stylesPathNadiCss}" rel="stylesheet">
-        <script nonce="${nonce}">
-            const nadivscode = acquireVsCodeApi();
-            const workFilesHistory = ${JSON.stringify(this._getHistoryList(targetFolder))};
-            const targetFolderData = ${JSON.stringify(this._getTargetFolderData(targetFolder))};
-        </script>
-			</head>
-      <body>
-      </body>
-      <script src="${scriptMn}" nonce="${nonce}"></script>
-	</html>`;
+        <head>
+          <meta charset="UTF-8">
+          <!--
+            Use a content security policy to only allow loading images from https or from our extension directory,
+            and only allow scripts that have a specific nonce.
+          -->
+          <meta http-equiv="Content-Security-Policy" content="img-src https: data:; style-src 'unsafe-inline' ${webview.cspSource}; script-src 'nonce-${nonce}';">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="${fontaw}" rel="stylesheet">
+          <link href="${styleResetPath}" rel="stylesheet">
+          <link href="${stylesPathMainPath}" rel="stylesheet">
+          <link href="${stylesPathNadiCss}" rel="stylesheet">
+          <script nonce="${nonce}">
+              const nadivscode = acquireVsCodeApi();
+              const workFilesHistory = ${JSON.stringify(this._getHistoryList(targetFolder))};
+              const targetFolderData = ${JSON.stringify(this._getTargetFolderData(targetFolder))};
+          </script>
+        </head>
+        <body>
+          <script src="${scriptMn}" nonce="${nonce}"></script>
+        </body>
+      </html>`;
   }
 }

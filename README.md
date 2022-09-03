@@ -6,6 +6,7 @@ Record and present daily recorded file changes.
 ## Main Features
 - Records daily changes of files in the working project directory.
 - Create a directory or file recursively inside the working project directory.
+- Diff of two files with ease.
 
 
 ## How to use the extension
@@ -16,6 +17,12 @@ Record and present daily recorded file changes.
 - on Windows: Press `Ctrl+Alt+N` to create file or press `Ctrl+Alt+F` to create folder recursively
 
 3. Right-click on a file or folder in explorer and select "NADI History: Ignore File/Folder" to select a file or folder to ignore from the historical recording.
+
+4. Diff of two files:
+- Right-click the file in explorer, and select "NADI: Add file to compare" to define your first file to be compared.
+- Right-click the file in explorer, and select "NADI: Do compare" to determine your second file as well as process the comparison.
+
+
 
 
 Command | Description
@@ -35,7 +42,10 @@ Command | Description
 Add the ".git" folder to be ignored automatically by the history recorder.
 
 ### 1.0.8
-Delete history item
+Delete history item.
+
+### 1.1.2
+Diff of two files added.
 
 ## License
 [MIT License](LICENSE)
