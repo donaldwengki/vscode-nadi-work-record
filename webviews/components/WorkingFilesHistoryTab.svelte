@@ -1,5 +1,5 @@
 <script lang="ts">
-import { rejects } from "assert";
+  import { rejects } from "assert";
 
   import { onMount } from "svelte";
   import { confirmPop, processIndicator } from "./setting.js";
@@ -66,6 +66,16 @@ import { rejects } from "assert";
 
   const buttons = [
     {
+      title: "Refresh",
+      callback: (e) => {
+        processIndicator();
+        nadivscode.postMessage({
+          type: "updateWindow",
+          value: targetFolderData.key,
+        });
+      },
+    },
+    {
       title: "Show Selection",
       callback: (e) => {
         selectionItem = !selectionItem ? true : false;
@@ -102,10 +112,14 @@ import { rejects } from "assert";
                     bulkDel.push(JSON.parse((checkBox as any).value));
                   }
                 });
-              
+
               if (bulkDel.length > 0) {
                 confirmPop(
-                  `Delete ${bulkDel.length > 1 ? bulkDel.length + ' items' : bulkDel.length + ' item'} from "${targetFolderData.date}" history data?`,
+                  `Delete ${
+                    bulkDel.length > 1
+                      ? bulkDel.length + " items"
+                      : bulkDel.length + " item"
+                  } from "${targetFolderData.date}" history data?`,
                   () => {
                     processIndicator();
                     nadivscode.postMessage({
@@ -118,7 +132,7 @@ import { rejects } from "assert";
                   }
                 );
               } else {
-                confirmPop('No data selected!');
+                confirmPop("No data selected!");
               }
             },
           });

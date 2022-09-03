@@ -554,7 +554,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (124:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date")}
+    // (136:0) {#if targetFolderData && targetFolderData.hasOwnProperty("date")}
     function create_if_block_4(ctx) {
     	let wfhtool;
     	let current;
@@ -595,7 +595,7 @@ var app = (function () {
     	};
     }
 
-    // (133:2) {#if targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
+    // (145:2) {#if targetFolderData && targetFolderData.hasOwnProperty("date") && targetFolderData.hasOwnProperty("key")}
     function create_if_block(ctx) {
     	let ul;
     	let each_value = /*list*/ ctx[0];
@@ -653,7 +653,7 @@ var app = (function () {
     	};
     }
 
-    // (137:10) {#if selectionItem}
+    // (149:10) {#if selectionItem}
     function create_if_block_3(ctx) {
     	let input;
     	let input_value_value;
@@ -680,7 +680,7 @@ var app = (function () {
     	};
     }
 
-    // (197:16) {#if item && item.hasOwnProperty("rename")}
+    // (209:16) {#if item && item.hasOwnProperty("rename")}
     function create_if_block_2(ctx) {
     	let span;
     	let t0_value = /*getDateHour*/ ctx[3](/*item*/ ctx[12].rename) + "";
@@ -708,7 +708,7 @@ var app = (function () {
     	};
     }
 
-    // (202:16) {#if item && item.hasOwnProperty("change")}
+    // (214:16) {#if item && item.hasOwnProperty("change")}
     function create_if_block_1(ctx) {
     	let span;
     	let t0_value = /*getDateHour*/ ctx[3](/*item*/ ctx[12].change) + "";
@@ -736,7 +736,7 @@ var app = (function () {
     	};
     }
 
-    // (135:6) {#each list as item}
+    // (147:6) {#each list as item}
     function create_each_block(ctx) {
     	let li;
     	let t0;
@@ -1002,6 +1002,17 @@ var app = (function () {
 
     	const buttons = [
     		{
+    			title: "Refresh",
+    			callback: e => {
+    				processIndicator();
+
+    				nadivscode.postMessage({
+    					type: "updateWindow",
+    					value: targetFolderData.key
+    				});
+    			}
+    		},
+    		{
     			title: "Show Selection",
     			callback: e => {
     				$$invalidate(1, selectionItem = !selectionItem ? true : false);
@@ -1042,8 +1053,8 @@ var app = (function () {
     							if (bulkDel.length > 0) {
     								confirmPop(
     									`Delete ${bulkDel.length > 1
-									? bulkDel.length + ' items'
-									: bulkDel.length + ' item'} from "${targetFolderData.date}" history data?`,
+									? bulkDel.length + " items"
+									: bulkDel.length + " item"} from "${targetFolderData.date}" history data?`,
     									() => {
     										processIndicator();
 
@@ -1057,7 +1068,7 @@ var app = (function () {
     									}
     								);
     							} else {
-    								confirmPop('No data selected!');
+    								confirmPop("No data selected!");
     							}
     						}
     					});

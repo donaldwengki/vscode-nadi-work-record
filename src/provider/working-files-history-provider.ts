@@ -144,6 +144,9 @@ export class WorkingFilesHistoryTab {
             value: null
           });
           break;
+        case "updateWindow":
+          this._update(dataMessage.value)
+          break;
       }
     })
   }

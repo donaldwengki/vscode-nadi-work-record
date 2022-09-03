@@ -163,22 +163,19 @@ export class WorkingHistoryFiles {
             const targetDir = path.join(config.localDirectory, 'history', data.dirname);
             const targetFile = path.join(targetDir, data.index + '.json');
             if (fs.existsSync(targetFile)) {
-                fs.readFile(targetFile, {
-                    encoding: 'utf-8'
-                }, (err, fileData) => {
-                    let trgPath = JSON.parse(fileData).rpath;
-                    let md5path = md5(path.join(config.workingDirectory,trgPath));
-                    let fileInLastDir = path.join(targetDir, 'last', md5path);
-                    fs.unlink(targetFile, (err) => {
-                        if (err) {
-                            reject('Error deleting history data.');
-                        } else {
-                            if(fs.existsSync(fileInLastDir)) {
-                                fs.unlinkSync(fileInLastDir);
-                            }
-                            resolve(true);
+                const fileData = fs.readFileSync(targetFile, { encoding: 'utf-8' });
+                let trgPath = JSON.parse(fileData).rpath;
+                let md5path = md5(path.join(config.workingDirectory, trgPath));
+                let fileInLastDir = path.join(targetDir, 'last', md5path);
+                fs.unlink(targetFile, (err) => {
+                    if (err) {
+                        reject('Error deleting history data.');
+                    } else {
+                        if (fs.existsSync(fileInLastDir)) {
+                            fs.unlinkSync(fileInLastDir);
                         }
-                    })
+                        resolve(true);
+                    }
                 })
             }
         })
@@ -191,12 +188,21 @@ export class WorkingHistoryFiles {
             }
             Promise.all(data.list.map(item => {
                 return new Promise((resolve, reject) => {
-                    const targetFile = path.join(config.localDirectory, '/history', data.dirname, item.index + '.json');
+                    const targetDir = path.join(config.localDirectory, 'history', data.dirname);
+                    const targetFile = path.join(targetDir, item.index + '.json');
+                    const fileData = fs.readFileSync(targetFile, { encoding: 'utf-8' });
+                    let trgPath = JSON.parse(fileData).rpath;
+                    let md5path = md5(path.join(config.workingDirectory, trgPath));
+                    let fileInLastDir = path.join(targetDir, 'last', md5path);
+
                     if (fs.existsSync(targetFile)) {
                         fs.unlink(targetFile, (err) => {
                             if (err) {
-                                reject('Error deleting history data.')
+                                reject('Error deleting history data.');
                             } else {
+                                if (fs.existsSync(fileInLastDir)) {
+                                    fs.unlinkSync(fileInLastDir);
+                                }
                                 resolve(true);
                             }
                         })
